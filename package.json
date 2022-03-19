@@ -10,6 +10,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "autoprefixer": "^9.8.6",
+    "firebase": "^9.6.9",
     "lottie-react": "^2.1.0",
     "postcss": "^7.0.36",
     "react": "^17.0.2",
@@ -22,13 +23,14 @@
     "react-scripts": "4.0.3",
     "react-spinners": "^0.11.0",
     "react-toastify": "^8.0.2",
+    "react-uuid": "^1.0.2",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.8"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "craco --openssl-legacy-provider start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
