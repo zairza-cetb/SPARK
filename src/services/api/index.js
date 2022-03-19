@@ -18,22 +18,40 @@ import {
   UPDATE_AP_URL,
   SPARK_API_URL,
 } from "../../utils/url";
+import {child, get, ref, set, update} from "firebase/database"
+import {dbs} from "../firebase/index"
+import uuid from "react-uuid"
+
+const dbRef = ref(dbs); // Create Database reference
+
 
 export const SignupPatient = async (data) => {
   return new Promise(async (resolve, reject) => {
-    await fetch(`${SIGNUP_PATIENT_URL}`, {
-      method: "POST",
-      body: data,
-      headers: {
-        "Content-Type": "application/json",
-      },
+    
+    // const hash = await bcrypt.hash(data.password,10);
+    const id=uuid();
+    get(child(dbRef,"Patient/"+data.phoneNo)).then(snapShot=>{
+      if(snapShot.exists()){
+        reject("User already exists");
+      }else{
+        set(child(dbRef,"Patient/"+data.phoneNo),{
+          id:id,
+          phoneno:data.phoneNo,
+          password:data.password,
+          createdAt:Date.now(),
+          isregistered:false,
+          isloggedin:false
+        }).then((res)=>resolve({
+          id:id,
+          accessToken:null,
+          phoneno:data.phoneNo,
+          password:data.password,
+          createdat:Date.now(),
+          isregistered:false,
+          isloggedin:false
+        }))
+      }
     })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success) resolve(result.response);
-        else reject(result.err);
-      })
-      .catch((err) => reject(err));
   });
 };
 
@@ -57,19 +75,38 @@ export const SignupDoctor = async (data) => {
 
 export const loginPatient = async (data) => {
   return new Promise(async (resolve, reject) => {
-    await fetch(`${LOGIN_PATIENT_URL}`, {
-      method: "POST",
-      body: data,
-      headers: {
-        "Content-Type": "application/json",
-      },
+    // console.log(data)
+    get(child(dbRef,"Patient/"+data.phoneNo)).then(snapShot=>{
+      // console.log(snapShot)
+      if(!snapShot.exists()){
+        reject("User doesn't exists,Please do signup");
+      }else{
+        const val=snapShot.val();
+        if(val.password==data.password){
+          var updates={};
+          updates["/Patient/"+data.phoneNo+"/isloggedin"]=true;
+          update(dbRef,updates).then(()=>{
+            console.log("Updated")
+            resolve({...val,isloggedin:true})
+          });
+      }else{
+        reject("Incorrect credentials")
+      }
+    }
     })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success) resolve(result.response.data);
-        else reject(result.err);
-      })
-      .catch((err) => reject(err));
+    // await fetch(`${LOGIN_PATIENT_URL}`, {
+    //   method: "POST",
+    //   body: data,
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // })
+    //   .then((response) => response.json())
+    //   .then((result) => {
+    //     if (result.success) resolve(result.response.data);
+    //     else reject(result.err);
+    //   })
+    //   .catch((err) => reject(err));
   });
 };
 
@@ -100,46 +137,44 @@ export const createPatient = async (data) => {
     state: data.state,
     pincode: data.pincode,
     dob: data.dob,
-    phoneNo: data.phone,
+    phoneno: data.phone,
     gender: data.gender,
-    bloodGp: data.bloodGp,
+    bloodgp: data.bloodGp,
     email: data.email,
+    modifiedAt:Date.now()
   };
   return new Promise(async (resolve, reject) => {
-    await fetch(`${CREATE_PATIENT_URL}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(bodyObj),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success) resolve(result.response);
-        else reject(result.err);
-      })
-      .catch((err) => reject(err));
-  });
-};
+    set(child(dbRef,"Patient/"+data.phone+"/Profile"),bodyObj).then(()=>{
+      console.log("Set")
+      var updates={}
+      updates['/Patient/'+data.phone+'/isregistered']=true;
+      update(dbRef,updates).then((res)=>{
+        console.log(res,"Updated");
+        resolve({...bodyObj,type:"patient"});
+    }).catch((err)=>
+      reject(err.message))
+  }).catch((err)=> reject(err.message));
+})
+}
 
 export const updatePatient = async (data) => {
 
   return new Promise(async (resolve, reject) => {
-    await fetch(`${UPDATE_PATIENT_URL}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: data,
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success) resolve(result.response);
-        else reject(result.err);
-      })
-      .catch((err) => {
-        reject(err.message);
-      });
+    // await fetch(`${UPDATE_PATIENT_URL}`, {
+    //   method: "PUT",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: data,
+    // })
+    //   .then((response) => response.json())
+    //   .then((result) => {
+    //     if (result.success) resolve(result.response);
+    //     else reject(result.err);
+    //   })
+    //   .catch((err) => {
+    //     reject(err.message);
+    //   });
   });
 };
 
@@ -270,23 +305,14 @@ export const getDoctor = async (phoneno) => {
 
 export const getPatient = async (phoneno) => {
   return new Promise(async (resolve, reject) => {
-    await fetch(
-      `${GET_PATIENT}?` +
-        new URLSearchParams({
-          phoneno: phoneno,
-        }),
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
+    get(child(dbRef,"Patient/"+phoneno+"/Profile")).then(snapShot=>{
+      if(!snapShot.exists()){
+        reject("No such patient exists with this phone number")
+      }else{
+        const val=snapShot.val();
+        resolve({...val,type:"patient"});
       }
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success) resolve(result.response);
-        else reject(result.err);
-      })
-      .catch((err) => reject(err.message));
+    })
   });
 };
 
