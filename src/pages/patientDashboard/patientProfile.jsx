@@ -115,7 +115,7 @@ function PatientProfile() {
       setIsUpdated(true);
       dispatch(
         updatePatientAsync(
-          JSON.stringify({
+          {
             name: name,
             age: age,
             city: city,
@@ -127,7 +127,7 @@ function PatientProfile() {
             bloodGp: bloodgp,
             email: email,
             phoneNo: authUser.phoneno,
-          })
+          }
         )
       );
     }
