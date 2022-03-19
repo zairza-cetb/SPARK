@@ -160,21 +160,19 @@ export const createPatient = async (data) => {
 export const updatePatient = async (data) => {
 
   return new Promise(async (resolve, reject) => {
-    // await fetch(`${UPDATE_PATIENT_URL}`, {
-    //   method: "PUT",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: data,
-    // })
-    //   .then((response) => response.json())
-    //   .then((result) => {
-    //     if (result.success) resolve(result.response);
-    //     else reject(result.err);
-    //   })
-    //   .catch((err) => {
-    //     reject(err.message);
-    //   });
+    var updates={};
+    updates['address']=data.address;
+    updates['age']=data.age;
+    updates['bloodgp']=data.bloodGp;
+    updates['city']=data.city;
+    updates['dob']=data.dob;
+    updates['email']=data.email;
+    updates['gender']=data.gender;
+    updates['name']=data.name;
+    updates['phoneno']=data.phoneNo;
+    updates['pincode']=data.pincode;
+    updates['state']=data.state;
+    update(child(dbRef,"Patient/"+data.phoneNo+"/Profile/"),updates).then(()=>resolve({...updates,type:"patient"})).catch(err=>reject(err.message));
   });
 };
 
