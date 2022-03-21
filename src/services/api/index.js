@@ -242,23 +242,11 @@ export const logoutPatient = async (data) => {
 
 export const logoutDoctor = async (data) => {
   return new Promise(async (resolve, reject) => {
-    await fetch(
-      `${LOGOUT_DOCTOR_URL}?` +
-      new URLSearchParams({
-        phoneNo: data.phoneno,
-      }),
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success) resolve(result.response);
-        else reject(result.err);
-      });
+    var updates = {};
+    updates["isloggedin"] = false;
+    update(child(dbRef, "Doctor/" + data.phoneno + "/"), updates).then(()=>{
+      resolve("Logged out successfully");
+    }).catch(err=>reject(err.message));
   });
 };
 
