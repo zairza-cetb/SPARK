@@ -189,13 +189,13 @@ export const updateDoctor = async (data) => {
     updates['phoneno'] = data.phoneNo;
     updates['qualifications'] = data.qualifications;
     updates['email'] = data.email;
-    updates['dept'] = data.dept;
-    updates['hospital'] = data.hospital;
+    updates['department'] = data.department;
+    updates['hospitalName'] = data.hospitalName;
     updates['age'] = data.age;
-    updates['specializations'] = data.specializations;
+    updates['specialisations'] = data.specialisations;
     updates['address'] = data.address;
     updates['workingDays'] = data.workingDays;
-    updates['workingHours'] = data.workingHours;
+    updates['workingHrs'] = data.workingHrs;
     update(child(dbRef, "Doctor/" + data.phoneNo + "/Profile/"), updates).then(() => resolve({ ...updates, type: "doctor" })).catch(err => reject(err.message));
   });
 };
@@ -221,28 +221,13 @@ export const createDoctor = async (data) => {
     set(child(dbRef, "Doctor/" + data.phoneNo + "/Profile"), bodyObj).then(() => {
       console.log("Set");
       var updates = {};
-      updates['/Doctor' + data.phoneNo + '/isregistered'] = true;
+      updates['/Doctor/' + data.phoneNo + '/isregistered'] = true;
       update(dbRef, updates).then((res) => {
         console.log(res, "Updated");
         resolve({ ...bodyObj, type: "doctor" });
       }).catch((err) => reject(err.message));
     }).catch((err) => reject(err.message));
   });
-  // return new Promise(async (resolve, reject) => {
-  //   await fetch(`${CREATE_DOCTOR_URL}`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: data,
-  //   })
-  //     .then((response) => response.json())
-  //     .then((result) => {
-  //       if (result.success) resolve(result.response);
-  //       else reject(result.err);
-  //     })
-  //     .catch((err) => reject(err));
-  // });
 };
 
 export const logoutPatient = async (data) => {
