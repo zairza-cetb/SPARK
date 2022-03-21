@@ -118,7 +118,7 @@ function DoctorProfile() {
     if (!isAlreadyRegistered)
       dispatch(
         createDoctorProfile(
-          JSON.stringify({
+          {
             id: authUser.id,
             name: name,
             age: age,
@@ -135,7 +135,7 @@ function DoctorProfile() {
             department: department,
             email: email,
             type: "doctor",
-          })
+          }
         )
       );
     else {

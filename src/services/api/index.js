@@ -18,7 +18,7 @@ import {
   UPDATE_AP_URL,
   SPARK_API_URL,
 } from "../../utils/url";
-import { child, equalTo, get, limitToLast, orderByChild, ref, set, update } from "firebase/database";
+import { child, equalTo, get, limitToLast, orderByChild, ref, set, update ,query} from "firebase/database";
 import { dbs } from "../firebase/index";
 import uuid from "react-uuid";
 import moment from "moment";
@@ -59,19 +59,29 @@ export const SignupPatient = async (data) => {
 
 export const SignupDoctor = async (data) => {
   return new Promise(async (resolve, reject) => {
-    await fetch(`${SIGNUP_DOCTOR_URL}`, {
-      method: "POST",
-      body: data,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success) resolve(result.response);
-        else reject(result.err);
-      })
-      .catch((err) => reject(err));
+    const id = uuid(); 
+    get(child(dbRef, "Doctor/" + data.phoneNo)).then(snapShot => {
+      if (snapShot.exists()) {
+        reject("User already exists");
+      } else {
+        set(child(dbRef, "Doctor/" + data.phoneNo), {
+          id: id,
+          phoneno: data.phoneNo,
+          password: data.password,
+          createdAt: Date.now(),
+          isregistered: false,
+          isloggedin: false
+        }).then((res) => resolve({
+          id: id,
+          accessToken: null,
+          phoneno: data.phoneNo,
+          password: data.password,
+          createdat: Date.now(),
+          isregistered: false,
+          isloggedin: false
+        }));
+      }
+    });
   });
 };
 
@@ -99,18 +109,23 @@ export const loginPatient = async (data) => {
 
 export const loginDoctor = async (data) => {
   return new Promise(async (resolve, reject) => {
-    await fetch(`${LOGIN_DOCTOR_URL}`, {
-      method: "POST",
-      body: data,
-      headers: {
-        "Content-Type": "application/json",
-      },
+    get(child(dbRef, "Doctor/" + data.phoneNo)).then(snapShot => {
+      if (!snapShot.exists()) {
+        reject("User doesn't exists,Please do signup");
+      } else {
+        const val = snapShot.val();
+        if (val.password == data.password) {
+          var updates = {};
+          updates["/Doctor/" + data.phoneNo + "/isloggedin"] = true;
+          update(dbRef, updates).then(() => {
+            console.log("Updated")
+            resolve({ ...val, isloggedin: true })
+          });
+        } else {
+          reject("Incorrect credentials")
+        }
+      }
     })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success) resolve(result.response.data);
-        else reject(result.err);
-      });
   });
 };
 
@@ -169,40 +184,65 @@ export const updatePatient = async (data) => {
 
 export const updateDoctor = async (data) => {
   return new Promise(async (resolve, reject) => {
-    await fetch(`${UPDATE_DOCTOR_URL}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: data,
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success) resolve(result.response);
-        else reject(result.err);
-      })
-      .catch((err) => {
-        reject(err.message);
-      });
+    var updates = {};
+    updates['name'] = data.name;
+    updates['phoneno'] = data.phoneNo;
+    updates['qualifications'] = data.qualifications;
+    updates['email'] = data.email;
+    updates['dept'] = data.dept;
+    updates['hospital'] = data.hospital;
+    updates['age'] = data.age;
+    updates['specializations'] = data.specializations;
+    updates['address'] = data.address;
+    updates['workingDays'] = data.workingDays;
+    updates['workingHours'] = data.workingHours;
+    update(child(dbRef, "Doctor/" + data.phoneNo + "/Profile/"), updates).then(() => resolve({ ...updates, type: "doctor" })).catch(err => reject(err.message));
   });
 };
 
 export const createDoctor = async (data) => {
+  const bodyObj = {
+    id: data.id,
+    name: data.name,
+    phoneno: data.phoneNo,
+    qualifications: data.qualifications,
+    email: data.email, 
+    dept: data.department,
+    hospital: data.hospitalName, 
+    age: data.age,
+    specializations: data.specialisations,
+    address: data.address, 
+    workingDays: data.workingDays,
+    workingHours: data.workingHrs,
+    modifiedAt: Date.now()
+  };
+  console.log(bodyObj)
   return new Promise(async (resolve, reject) => {
-    await fetch(`${CREATE_DOCTOR_URL}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: data,
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success) resolve(result.response);
-        else reject(result.err);
-      })
-      .catch((err) => reject(err));
+    set(child(dbRef, "Doctor/" + data.phoneNo + "/Profile"), bodyObj).then(() => {
+      console.log("Set");
+      var updates = {};
+      updates['/Doctor' + data.phoneNo + '/isregistered'] = true;
+      update(dbRef, updates).then((res) => {
+        console.log(res, "Updated");
+        resolve({ ...bodyObj, type: "doctor" });
+      }).catch((err) => reject(err.message));
+    }).catch((err) => reject(err.message));
   });
+  // return new Promise(async (resolve, reject) => {
+  //   await fetch(`${CREATE_DOCTOR_URL}`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: data,
+  //   })
+  //     .then((response) => response.json())
+  //     .then((result) => {
+  //       if (result.success) resolve(result.response);
+  //       else reject(result.err);
+  //     })
+  //     .catch((err) => reject(err));
+  // });
 };
 
 export const logoutPatient = async (data) => {
@@ -219,9 +259,9 @@ export const logoutDoctor = async (data) => {
   return new Promise(async (resolve, reject) => {
     await fetch(
       `${LOGOUT_DOCTOR_URL}?` +
-        new URLSearchParams({
-          phoneNo: data.phoneno,
-        }),
+      new URLSearchParams({
+        phoneNo: data.phoneno,
+      }),
       {
         method: "GET",
         headers: {
@@ -247,8 +287,10 @@ export const getAllDoctors = async () => {
     })
       .then((response) => response.json())
       .then((result) => {
-        if (result.success) resolve(result.response);
-        else reject(result.err);
+        if (result.success)
+          resolve(result.response);
+        else
+          reject(result.err)
       })
       .catch((err) => reject(err));
     // get(child(dbRef, "Doctor")).then(snapShot => {
@@ -266,9 +308,9 @@ export const getDoctor = async (phoneno) => {
   return new Promise(async (resolve, reject) => {
     await fetch(
       `${GET_DOCTOR}?` +
-        new URLSearchParams({
-          phoneno: phoneno,
-        }),
+      new URLSearchParams({
+        phoneno: phoneno,
+      }),
       {
         method: "GET",
         headers: {
