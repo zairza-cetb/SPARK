@@ -29,10 +29,10 @@ function Header() {
     );
   else
     return (
-      <header className="text-gray-600 body-font sm:px-20 shadow-lg fixed bg-white z-10 w-screen">
+      <header className="text-gray-600 bg-primary body-font sm:px-20 fixed z-10 w-screen">
         <div className="container mx-auto flex flex-wrap p-5 flex-row items-center">
           <a
-            className="flex title-font font-medium items-center text-gray-900"
+            className="flex title-font font-medium items-center text-white"
             href="/"
           >
             <svg
@@ -42,22 +42,22 @@ function Header() {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth="2"
-              className="w-10 h-10 text-primary animate-pulse"
+              className="w-10 h-10 text-white"
               viewBox="0 0 24 24"
             >
               <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
             </svg>
-            <span className="ml-3 text-xl hidden md:block">Spark Healthlines</span>
+            <span className="ml-3 text-xl hidden md:block font-semibold">VirQue</span>
           </a>
           <nav className="ml-auto mr-auto flex flex-wrap items-center text-base justify-center"></nav>
           <button
-            className="inline-flex items-center mr-4 md:mr-5 text-sm cursor-pointer"
+            className="text-white font-normal inline-flex items-center mr-4 md:mr-5 text-sm cursor-pointer"
             onClick={(e) => setDoctor(true)}
           >
             Apply as Doctor
           </button>
           <a
-            className="inline-flex items-center text-white bg-primary border-0 py-2 px-4 focus:outline-none hover:opacity-80 rounded"
+            className="inline-flex items-center text-primary bg-white border-0 py-2 px-4 focus:outline-none hover:opacity-80 rounded-full font-semibold"
             href="/signin"
             onClick={(e) => setPatient(true)}
           >

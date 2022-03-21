@@ -254,39 +254,39 @@ function PatientDashboard() {
         <aside id="sidenav-open" className="h-screen">
           <nav className="flex flex-col justify-between h-full p-5 bg-gray-50">
             <div className="sidebar-title self-center my-10 uppercase text-2xl tracking-widest2 font-bold text-dark">
-              Spark
+              Virque
             </div>
             <div>
               <button
                 onClick={handleDashboard}
-                className="flex items-center p-3 mb-4 rounded-xl hover:bg-gray-200"
+                className="flex items-center p-3 mb-4 rounded-xl hover:scale-125"
               >
-                <MdDashboard className="mr-3 text-3xl text-primary" />
+                <MdDashboard className="mr-3 text-3xl text-bg" />
                 <span className="text-gray-900 text-xl">Dashboard</span>
               </button>
 
               <button
                 onClick={handleProfile}
-                className="flex items-center p-3 mb-4 rounded-xl hover:bg-gray-200"
+                className="flex items-center p-3 mb-4 rounded-xl"
               >
-                <MdPerson className="mr-3 text-3xl text-primary" />
+                <MdPerson className="mr-3 text-3xl text-bg" />
                 <span className="text-gray-900 text-xl">Profile</span>
               </button>
 
               <button
                 onClick={handleInventory}
-                className="flex items-center p-3 mb-4 rounded-xl hover:bg-gray-200"
+                className="flex items-center p-3 mb-4 rounded-xl"
               >
-                <MdFolder className="mr-3 text-3xl text-primary" />
+                <MdFolder className="mr-3 text-3xl text-bg" />
                 <span className="text-gray-900 text-xl">Inventory</span>
               </button>
             </div>
 
             <div className="grid justify-between w-64">
               <Lottie animationData={SideBarAnimation} />
-              <div className="flex mt-2 bg-dark text-white cursor-pointer md:rounded-md items-center justify-center rounded-lg ">
+              <div className="flex mt-2 bg-dark text-white cursor-pointer md:rounded-md items-center justify-center rounded-full">
                 <button
-                  className="flex space-x-3 py-2 px-6 text-md items-center justify-center"
+                  className="flex space-x-3 py-2 px-6 text-md items-center justify-center rounded-full"
                   onClick={handleLogout}
                 >
                   <HiLogout className="text-lg" />
@@ -339,7 +339,7 @@ function PatientDashboard() {
           >
             <div className="flex flex-row justify-between">
               <div className="flex flex-col w-full space-y-3">
-                <p className="text-xl font-bold mb-4 text-primary uppercase">
+                <p className="text-xl font-bold mb-4 text-bg uppercase">
                   Book a new appointment
                 </p>
                 <p className="font-semibold">Pick a date :</p>
