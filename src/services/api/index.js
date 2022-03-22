@@ -18,7 +18,7 @@ import {
   UPDATE_AP_URL,
   SPARK_API_URL,
 } from "../../utils/url";
-import { child, equalTo, get, limitToLast, orderByChild, ref, set, update ,query} from "firebase/database";
+import { child, equalTo, get, limitToLast, orderByChild, ref, set, update ,query, orderByKey} from "firebase/database";
 import { dbs } from "../firebase/index";
 import uuid from "react-uuid";
 import moment from "moment";
@@ -228,21 +228,6 @@ export const createDoctor = async (data) => {
       }).catch((err) => reject(err.message));
     }).catch((err) => reject(err.message));
   });
-  // return new Promise(async (resolve, reject) => {
-  //   await fetch(`${CREATE_DOCTOR_URL}`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: data,
-  //   })
-  //     .then((response) => response.json())
-  //     .then((result) => {
-  //       if (result.success) resolve(result.response);
-  //       else reject(result.err);
-  //     })
-  //     .catch((err) => reject(err));
-  // });
 };
 
 export const logoutPatient = async (data) => {
@@ -279,28 +264,39 @@ export const logoutDoctor = async (data) => {
 
 export const getAllDoctors = async () => {
   return new Promise(async (resolve, reject) => {
-    await fetch(`${GET_ALL_DOC}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
+
+    get(child(dbRef,"Doctor/")).then(ss=>{
+      if(!ss.exists()){
+        reject("No data exists");
+      }
+      else{
+        const d = ss.val();
+        const d_arr=[];
+        Object.keys(d).forEach(k=>{
+          d_arr.push(d[k]);
+        })
+        console.log(d_arr)
+        resolve(d_arr);
+      }
+    }).catch(err=>{
+      reject(err.message)
     })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success)
-          resolve(result.response);
-        else
-          reject(result.err)
-      })
-      .catch((err) => reject(err));
-    // get(child(dbRef, "Doctor")).then(snapShot => {
-    //   if(!snapShot.exists()){
-    //     resolve([]);
-    //   }else{
-    //     const val=snapShot.val();
-    //     resolve(val);
-    //   }
-    // }).catch(err => reject(err.message));
+
+
+    // await fetch(`${GET_ALL_DOC}`, {
+    //   method: "GET",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // })
+    //   .then((response) => response.json())
+    //   .then((result) => {
+    //     if (result.success)
+    //       resolve(result.response);
+    //     else
+    //       reject(result.err)
+    //   })
+    //   .catch((err) => reject(err))
   });
 };
 
@@ -426,6 +422,7 @@ export const createAppointment = async (data) => {
 };
 
 export const getAppointment = async (data) => {
+  console.log("Get Appointment Called",data)
   return new Promise(async (resolve, reject) => {
     const dt = moment(new Date()).format('YYYY-MM-DD');
     if (data.forUser === "doctor") {
@@ -437,23 +434,11 @@ export const getAppointment = async (data) => {
           resolve(ss.val());
         }
       }).catch(err=>reject(err.message))
-      // const url = data.status
-      //   ? GET_AP_URL +
-      //     `all?forUser=doctor&status=${data.status}&dphoneNo=${data.dphoneNo}`
-      //   : GET_AP_URL + `all?forUser=doctor&dphoneNo=${data.dphoneNo}`;
-      // await fetch(url, {
-      //   method: "GET",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      // })
-      //   .then((response) => response.json())
-      //   .then((result) => {
-      //     if (result.success) resolve(result);
-      //     else reject(result.response);
-      //   })
-      //   .catch((err) => reject(err));
     } else if (data.forUser === "patient") {
+      if(!data.status){
+
+      get(query(child(dbRef,`Appointment/${dt}`),orderByKey(data.pphoneno))).then(ss=>console.log(ss.val()))
+      }
       // const url = data.status
       //   ? GET_AP_URL +
       //     `all?forUser=patient&status=${data.status}&pphoneNo=${data.pphoneNo}`

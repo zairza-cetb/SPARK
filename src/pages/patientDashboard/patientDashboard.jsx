@@ -82,8 +82,8 @@ function PatientDashboard() {
   const doctorsDropdownList = [];
   for (var d in doctorsList) {
     doctorsDropdownList.push(
-      <option value={d} className={doctorsList[d].name}>
-        {doctorsList[d].name}
+      <option value={d} className={doctorsList[d].Profile?.name}>
+        {doctorsList[d].Profile?.name}
       </option>
     );
   }
@@ -211,9 +211,7 @@ function PatientDashboard() {
         symptoms: symptoms,
         type: type,
       };
-
       dispatch(createAppointmentAction(appointmentData));
-
       setAppointmentDate("");
       setDoctor(0);
       setSymptoms("");
