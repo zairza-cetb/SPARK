@@ -253,38 +253,38 @@ function PatientDashboard() {
       <div className="main-dashboard">
         <aside id="sidenav-open" className="h-screen">
           <nav className="flex flex-col justify-between h-full p-5 bg-gray-50">
-            <div className="sidebar-title self-center my-10 uppercase text-2xl tracking-widest2 font-bold text-dark">
+            <div className="sidebar-title self-center my-10 uppercase text-2xl tracking-widest2 font-bold text-primary">
               Virque
             </div>
             <div>
               <button
                 onClick={handleDashboard}
-                className="flex items-center p-3 mb-4 rounded-xl hover:scale-125"
+                className="flex items-center p-3 mb-4 rounded-xl"
               >
-                <MdDashboard className="mr-3 text-3xl text-bg" />
-                <span className="text-gray-900 text-xl">Dashboard</span>
+                <MdDashboard className="mr-3 text-3xl text-primary" />
+                <span className="text-primary text-xl">Dashboard</span>
               </button>
 
               <button
                 onClick={handleProfile}
                 className="flex items-center p-3 mb-4 rounded-xl"
               >
-                <MdPerson className="mr-3 text-3xl text-bg" />
-                <span className="text-gray-900 text-xl">Profile</span>
+                <MdPerson className="mr-3 text-3xl text-primary" />
+                <span className="text-primary text-xl">Profile</span>
               </button>
 
               <button
                 onClick={handleInventory}
                 className="flex items-center p-3 mb-4 rounded-xl"
               >
-                <MdFolder className="mr-3 text-3xl text-bg" />
-                <span className="text-gray-900 text-xl">Inventory</span>
+                <MdFolder className="mr-3 text-3xl text-primary" />
+                <span className="text-primary text-xl">Inventory</span>
               </button>
             </div>
 
             <div className="grid justify-between w-64">
-              <Lottie animationData={SideBarAnimation} />
-              <div className="flex mt-2 bg-dark text-white cursor-pointer md:rounded-md items-center justify-center rounded-full">
+              <Lottie className="mx-2" animationData={SideBarAnimation} />
+              <div className="flex mt-2 bg-primary text-white cursor-pointer mx-10 items-center justify-center rounded-full">
                 <button
                   className="flex space-x-3 py-2 px-6 text-md items-center justify-center rounded-full"
                   onClick={handleLogout}
@@ -412,7 +412,7 @@ function PatientDashboard() {
             </div>
           </Modal>
           <div className="md:flex grid items-center justify-between">
-            <h1 className="mx-2 text-xl font-bold text-gray-900">
+            <h1 className="mx-2 text-xl font-bold text-primary">
               <input
                 type="text"
                 className="md:w-96 w-82 text-sm md:text-md py-2.5 px-4 md:ml-5 rounded-full outline-none bg-gray-100"
@@ -420,8 +420,8 @@ function PatientDashboard() {
               />
             </h1>
             <p className="text-sm hidden md:flex md:text-xl">
-              <span className="text-lg md:text-xl mr-6 text-dark">{date}</span>
-              <span className="text-lg md:text-xl md:mr-12 text-dark">
+              <span className="text-lg md:text-xl mr-6 text-white bg-primary rounded-full p-1 px-4">{date}</span>
+              <span className="text-lg md:text-xl md:mr-12 text-white bg-primary rounded-full p-1 px-4">
                 {time}
               </span>
             </p>
