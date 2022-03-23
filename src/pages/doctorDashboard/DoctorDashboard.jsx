@@ -163,7 +163,7 @@ function DoctorDashboard() {
       <div className="main-dashboard">
         <aside id="sidenav-open" className="h-screen">
           <nav className="flex flex-col justify-between h-full p-5 bg-gray-50">
-            <div className="sidebar-title self-center my-10 uppercase text-2xl tracking-widest2 font-bold text-dark">
+            <div className="sidebar-title self-center my-10 uppercase text-2xl tracking-widest2 font-bold text-primary">
               Spark
             </div>
             <div>
@@ -186,7 +186,7 @@ function DoctorDashboard() {
 
             <div className="grid justify-between w-64">
               <Lottie animationData={SideBarAnimation} />
-              <div className="flex mt-2 bg-dark text-white cursor-pointer md:rounded-md items-center justify-center rounded-lg ">
+              <div className="flex mt-2 bg-primary text-white cursor-pointer md:rounded-md items-center justify-center rounded-lg ">
                 <button
                   className="flex space-x-3 py-2 px-6 text-md items-center justify-center"
                   onClick={handleLogout}
@@ -241,15 +241,15 @@ function DoctorDashboard() {
               />
             </h1>
             <p className="text-sm hidden md:flex md:text-xl">
-              <span className="text-lg md:text-xl mr-6 text-dark">{date}</span>
-              <span className="text-lg md:text-xl md:mr-12 text-dark">
+              <span className="text-lg md:text-xl mr-6 text-primary">{date}</span>
+              <span className="text-lg md:text-xl md:mr-12 text-primary">
                 {time}
               </span>
             </p>
           </div>
 
           <section className="grid p-6">
-            <h1 className="lg:text-4xl md:text-3xl text-xl font-semibold mt-4 text-dark">
+            <h1 className="lg:text-4xl md:text-3xl text-xl font-semibold mt-4 text-primary">
               Welcome, {currentUserDetails.name}
             </h1>
             <h4 className="md:text-lg text-md text-gray-600 mt-3">
@@ -267,7 +267,7 @@ function DoctorDashboard() {
               <div className="w-full lg:w-2/3">
                 <div className="flex flex-col w-full p-6">
                   <div className="grid md:flex flex-row w-full items-center mt-4 justify-between">
-                    <h3 className="grid md:flex text-2xl text-md font-bold text-dark">
+                    <h3 className="grid md:flex text-2xl text-md font-bold text-primary">
                       Appointment List
                     </h3>
                   </div>
@@ -297,7 +297,7 @@ function DoctorDashboard() {
               <div className="w-full lg:w-1/3">
                 <div className="flex flex-col w-full">
                   <div className="flex flex-col flex-grow lg:m-10 mx-auto my-10">
-                    <h3 className="grid md:flex text-2xl text-md font-bold text-dark mb-10 pl-4">
+                    <h3 className="grid md:flex text-2xl text-md font-bold text-primary mb-10 pl-4">
                       Patient's details
                     </h3>
                     <PatientProfileCard
@@ -314,7 +314,7 @@ function DoctorDashboard() {
           ) : (
             <section className="flex flex-wrap p-6 justify-evenly">
               <div className="items-center mt-4 self-center">
-                <h3 className="mb-5 flex text-2xl text-md font-bold text-dark">
+                <h3 className="mb-5 flex text-2xl text-md font-bold text-primary">
                   You have no appointments for today!!
                 </h3>
               </div>

@@ -151,7 +151,7 @@ function PatientProfile() {
       <div className="main-dashboard">
         <aside id="sidenav-open" className="h-screen">
           <nav className="flex flex-col justify-between h-full p-5 bg-gray-50">
-            <div className="sidebar-title self-center my-10 uppercase text-2xl tracking-widest2 font-bold text-dark">
+            <div className="sidebar-title self-center my-10 uppercase text-2xl tracking-widest2 font-bold text-primary">
               Spark
             </div>
             <div>
@@ -182,7 +182,7 @@ function PatientProfile() {
 
             <div className="grid justify-between w-64">
               <Lottie animationData={SideBarAnimation} />
-              <div className="flex mt-2 bg-dark text-white cursor-pointer md:rounded-md items-center justify-center rounded-lg ">
+              <div className="flex mt-2 bg-primary text-white cursor-pointer md:rounded-md items-center justify-center rounded-lg ">
                 <button
                   className="flex space-x-3 py-2 px-6 text-md items-center justify-center"
                   onClick={handleLogout}
@@ -237,7 +237,7 @@ function PatientProfile() {
             <div className="mt-10 sm:mt-0">
               <div className="p-6">
                 <div className="md:col-span-1">
-                  <h1 className="text-dark font-bold md:text-3xl text-2xl">
+                  <h1 className="text-primary font-bold md:text-3xl text-2xl">
                     Personal Information
                   </h1>
                   <p className="mt-1 mb-5 md:text-lg text-md text-gray-600">

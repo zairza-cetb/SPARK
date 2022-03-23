@@ -427,9 +427,9 @@ function PatientDashboard() {
             </p>
           </div>
           <section className="grid p-6">
-            <span className="text-sm md:hidden mr-6 text-dark">{date}</span>
-            <span className="text-sm md:hidden md:mr-12 text-dark">{time}</span>
-            <h1 className="lg:text-4xl md:text-3xl text-xl font-semibold mt-4 text-dark">
+            <span className="text-sm md:hidden mr-6 text-primary">{date}</span>
+            <span className="text-sm md:hidden md:mr-12 text-primary">{time}</span>
+            <h1 className="lg:text-4xl md:text-3xl text-xl font-semibold mt-4 text-primary">
               Welcome, {userName.name}
             </h1>
             <h4 className="md:text-lg text-md text-gray-600 mt-3">
@@ -453,7 +453,7 @@ function PatientDashboard() {
               <div className="w-full lg:w-2/3">
                 <div className="flex flex-col w-full p-6">
                   <div className="grid md:flex flex-row w-full items-center mt-4 justify-between">
-                    <h3 className="grid md:flex text-2xl text-md font-bold text-dark">
+                    <h3 className="grid md:flex text-2xl text-md font-bold text-primary">
                       Waiting List
                     </h3>
                     <WaitingListItemButton
@@ -487,7 +487,7 @@ function PatientDashboard() {
                 <div className="w-full lg:w-1/3">
                   <div className="flex flex-col w-full">
                     <div className="flex flex-col flex-grow lg:m-10 mx-auto my-10">
-                      <h3 className="grid md:flex text-2xl text-md font-bold text-dark mb-10 pl-4">
+                      <h3 className="grid md:flex text-2xl text-md font-bold text-primary mb-10 pl-4">
                         Doctor's details
                       </h3>
                       <DoctorProfileCard
@@ -510,7 +510,7 @@ function PatientDashboard() {
           ) : (
             <section className="flex flex-wrap p-6 justify-evenly">
               <div className="items-center mt-4">
-                <h3 className="mb-5 flex text-2xl text-md font-bold text-dark">
+                <h3 className="mb-5 flex text-2xl text-md font-bold text-primary">
                   You can book your appointment here :
                 </h3>
                 <WaitingListItemButton

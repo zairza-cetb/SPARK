@@ -9,7 +9,7 @@ const ProfileCard = (props) => {
         {profile_dp ? <img src={profile_dp} alt="" /> : <DefaultAvatar />}
       </div>
       <div>
-        <div className="font-bold text-center text-xl mt-2 text-dark">
+        <div className="font-bold text-center text-xl mt-2 text-primary">
           {name}
         </div>
         <div className="font-regular text-md text-center mt-1">
