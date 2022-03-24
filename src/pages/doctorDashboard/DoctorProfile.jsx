@@ -142,7 +142,7 @@ function DoctorProfile() {
       setIsUpdated(true);
       dispatch(
         updateDoctorAsync(
-          JSON.stringify({
+          {
             name: name,
             age: age,
             workingDays: workingDays,
@@ -157,7 +157,7 @@ function DoctorProfile() {
             specialisations: specialization,
             department: department,
             email: email,
-          })
+          }
         )
       );
     }
