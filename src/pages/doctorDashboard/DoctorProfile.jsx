@@ -118,7 +118,7 @@ function DoctorProfile() {
     if (!isAlreadyRegistered)
       dispatch(
         createDoctorProfile(
-          JSON.stringify({
+          {
             id: authUser.id,
             name: name,
             age: age,
@@ -135,14 +135,14 @@ function DoctorProfile() {
             department: department,
             email: email,
             type: "doctor",
-          })
+          }
         )
       );
     else {
       setIsUpdated(true);
       dispatch(
         updateDoctorAsync(
-          JSON.stringify({
+          {
             name: name,
             age: age,
             workingDays: workingDays,
@@ -157,7 +157,7 @@ function DoctorProfile() {
             specialisations: specialization,
             department: department,
             email: email,
-          })
+          }
         )
       );
     }
