@@ -18,7 +18,19 @@ import {
   UPDATE_AP_URL,
   SPARK_API_URL,
 } from "../../utils/url";
-import { child, equalTo, get, limitToLast, orderByChild, ref, set, update ,query, orderByKey} from "firebase/database";
+import {
+  child,
+  equalTo,
+  get,
+  limitToLast,
+  orderByChild,
+  ref,
+  set,
+  update,
+  query,
+  orderByKey,
+  remove,
+} from "firebase/database";
 import { dbs } from "../firebase/index";
 import uuid from "react-uuid";
 import moment from "moment";
@@ -59,8 +71,8 @@ export const SignupPatient = async (data) => {
 
 export const SignupDoctor = async (data) => {
   return new Promise(async (resolve, reject) => {
-    const id = uuid(); 
-    get(child(dbRef, "Doctor/" + data.phoneNo)).then(snapShot => {
+    const id = uuid();
+    get(child(dbRef, "Doctor/" + data.phoneNo)).then((snapShot) => {
       if (snapShot.exists()) {
         reject("User already exists");
       } else {
@@ -70,16 +82,18 @@ export const SignupDoctor = async (data) => {
           password: data.password,
           createdAt: Date.now(),
           isregistered: false,
-          isloggedin: false
-        }).then((res) => resolve({
-          id: id,
-          accessToken: null,
-          phoneno: data.phoneNo,
-          password: data.password,
-          createdat: Date.now(),
-          isregistered: false,
-          isloggedin: false
-        }));
+          isloggedin: false,
+        }).then((res) =>
+          resolve({
+            id: id,
+            accessToken: null,
+            phoneno: data.phoneNo,
+            password: data.password,
+            createdat: Date.now(),
+            isregistered: false,
+            isloggedin: false,
+          })
+        );
       }
     });
   });
@@ -109,7 +123,7 @@ export const loginPatient = async (data) => {
 
 export const loginDoctor = async (data) => {
   return new Promise(async (resolve, reject) => {
-    get(child(dbRef, "Doctor/" + data.phoneNo)).then(snapShot => {
+    get(child(dbRef, "Doctor/" + data.phoneNo)).then((snapShot) => {
       if (!snapShot.exists()) {
         reject("User doesn't exists,Please do signup");
       } else {
@@ -118,14 +132,14 @@ export const loginDoctor = async (data) => {
           var updates = {};
           updates["/Doctor/" + data.phoneNo + "/isloggedin"] = true;
           update(dbRef, updates).then(() => {
-            console.log("Updated")
-            resolve({ ...val, isloggedin: true })
+            console.log("Updated");
+            resolve({ ...val, isloggedin: true });
           });
         } else {
-          reject("Incorrect credentials")
+          reject("Incorrect credentials");
         }
       }
-    })
+    });
   });
 };
 
@@ -185,18 +199,20 @@ export const updatePatient = async (data) => {
 export const updateDoctor = async (data) => {
   return new Promise(async (resolve, reject) => {
     var updates = {};
-    updates['name'] = data.name;
-    updates['phoneno'] = data.phoneNo;
-    updates['qualifications'] = data.qualifications;
-    updates['email'] = data.email;
-    updates['dept'] = data.dept;
-    updates['hospital'] = data.hospital;
-    updates['age'] = data.age;
-    updates['specializations'] = data.specializations;
-    updates['address'] = data.address;
-    updates['workingDays'] = data.workingDays;
-    updates['workingHours'] = data.workingHours;
-    update(child(dbRef, "Doctor/" + data.phoneNo + "/Profile/"), updates).then(() => resolve({ ...updates, type: "doctor" })).catch(err => reject(err.message));
+    updates["name"] = data.name;
+    updates["phoneno"] = data.phoneNo;
+    updates["qualifications"] = data.qualifications;
+    updates["email"] = data.email;
+    updates["dept"] = data.dept;
+    updates["hospital"] = data.hospital;
+    updates["age"] = data.age;
+    updates["specializations"] = data.specializations;
+    updates["address"] = data.address;
+    updates["workingDays"] = data.workingDays;
+    updates["workingHours"] = data.workingHours;
+    update(child(dbRef, "Doctor/" + data.phoneNo + "/Profile/"), updates)
+      .then(() => resolve({ ...updates, type: "doctor" }))
+      .catch((err) => reject(err.message));
   });
 };
 
@@ -206,27 +222,31 @@ export const createDoctor = async (data) => {
     name: data.name,
     phoneno: data.phoneNo,
     qualifications: data.qualifications,
-    email: data.email, 
+    email: data.email,
     dept: data.department,
-    hospital: data.hospitalName, 
+    hospital: data.hospitalName,
     age: data.age,
     specializations: data.specialisations,
-    address: data.address, 
+    address: data.address,
     workingDays: data.workingDays,
     workingHours: data.workingHrs,
-    modifiedAt: Date.now()
+    modifiedAt: Date.now(),
   };
-  console.log(bodyObj)
+  console.log(bodyObj);
   return new Promise(async (resolve, reject) => {
-    set(child(dbRef, "Doctor/" + data.phoneNo + "/Profile"), bodyObj).then(() => {
-      console.log("Set");
-      var updates = {};
-      updates['/Doctor' + data.phoneNo + '/isregistered'] = true;
-      update(dbRef, updates).then((res) => {
-        console.log(res, "Updated");
-        resolve({ ...bodyObj, type: "doctor" });
-      }).catch((err) => reject(err.message));
-    }).catch((err) => reject(err.message));
+    set(child(dbRef, "Doctor/" + data.phoneNo + "/Profile"), bodyObj)
+      .then(() => {
+        console.log("Set");
+        var updates = {};
+        updates["/Doctor" + data.phoneNo + "/isregistered"] = true;
+        update(dbRef, updates)
+          .then((res) => {
+            console.log(res, "Updated");
+            resolve({ ...bodyObj, type: "doctor" });
+          })
+          .catch((err) => reject(err.message));
+      })
+      .catch((err) => reject(err.message));
   });
 };
 
@@ -234,9 +254,11 @@ export const logoutPatient = async (data) => {
   return new Promise(async (resolve, reject) => {
     var updates = {};
     updates["isloggedin"] = false;
-    update(child(dbRef, "Patient/" + data.phoneno + "/"), updates).then(()=>{
-      resolve("Logged out successfully");
-    }).catch(err=>reject(err.message));
+    update(child(dbRef, "Patient/" + data.phoneno + "/"), updates)
+      .then(() => {
+        resolve("Logged out successfully");
+      })
+      .catch((err) => reject(err.message));
   });
 };
 
@@ -244,9 +266,9 @@ export const logoutDoctor = async (data) => {
   return new Promise(async (resolve, reject) => {
     await fetch(
       `${LOGOUT_DOCTOR_URL}?` +
-      new URLSearchParams({
-        phoneNo: data.phoneno,
-      }),
+        new URLSearchParams({
+          phoneNo: data.phoneno,
+        }),
       {
         method: "GET",
         headers: {
@@ -264,24 +286,23 @@ export const logoutDoctor = async (data) => {
 
 export const getAllDoctors = async () => {
   return new Promise(async (resolve, reject) => {
-
-    get(child(dbRef,"Doctor/")).then(ss=>{
-      if(!ss.exists()){
-        reject("No data exists");
-      }
-      else{
-        const d = ss.val();
-        const d_arr=[];
-        Object.keys(d).forEach(k=>{
-          d_arr.push(d[k]);
-        })
-        console.log(d_arr)
-        resolve(d_arr);
-      }
-    }).catch(err=>{
-      reject(err.message)
-    })
-
+    get(child(dbRef, "Doctor/"))
+      .then((ss) => {
+        if (!ss.exists()) {
+          reject("No data exists");
+        } else {
+          const d = ss.val();
+          const d_arr = [];
+          Object.keys(d).forEach((k) => {
+            d_arr.push(d[k]);
+          });
+          console.log(d_arr);
+          resolve(d_arr);
+        }
+      })
+      .catch((err) => {
+        reject(err.message);
+      });
 
     // await fetch(`${GET_ALL_DOC}`, {
     //   method: "GET",
@@ -304,9 +325,9 @@ export const getDoctor = async (phoneno) => {
   return new Promise(async (resolve, reject) => {
     await fetch(
       `${GET_DOCTOR}?` +
-      new URLSearchParams({
-        phoneno: phoneno,
-      }),
+        new URLSearchParams({
+          phoneno: phoneno,
+        }),
       {
         method: "GET",
         headers: {
@@ -338,16 +359,30 @@ export const getPatient = async (phoneno) => {
 
 export const createAppointment = async (data) => {
   return new Promise(async (resolve, reject) => {
-    const dt = moment(new Date()).format('YYYY-MM-DD');
-    get(query(child(dbRef,`Appointment/${dt}/${data.dphoneno}`),orderByChild('pphoneno'),equalTo(data.pphoneno))).then(snapShot => {
-      if(snapShot.exists()){
-        reject("You have already booked an appointment with this doctor on this date");
-      }else{
-        get(child(dbRef,`Doctor/${data.dphoneno}/Profile`)).then(ss=>{
-          if(!ss.exists()){
+    const dt = moment(new Date()).format("YYYY-MM-DD");
+    console.log(data);
+    get(
+      query(
+        child(dbRef, `Appointment/${data.apdate}/${data.dphoneno}`),
+        orderByKey(data.pphoneno)
+      )
+    ).then((snapShot) => {
+      if (snapShot.exists()) {
+        reject(
+          "You have already booked an appointment with this doctor on this date"
+        );
+      } else {
+        get(child(dbRef, `Doctor/${data.dphoneno}/Profile`)).then((ss) => {
+          if (!ss.exists()) {
             reject("No such doctor exists");
-          }else{
-            const dval=ss.val();
+            return;
+          } else {
+            const dval = ss.val();
+            console.log(dval);
+            console.log({
+              start: dval.workingHours.start.toString().slice(0, 5),
+              end: addTime(dval.workingHours.start.toString().slice(0, 5)),
+            });
             var weekday = new Array(7);
             weekday[0] = "Sunday";
             weekday[1] = "Monday";
@@ -356,144 +391,216 @@ export const createAppointment = async (data) => {
             weekday[4] = "Thursday";
             weekday[5] = "Friday";
             weekday[6] = "Saturday";
-            const day=weekday[(new Date(dt)).getDay()].toLowerCase();
-            if(!(dval.workingdays.includes(day))){
+            const day = weekday[new Date(dt).getDay()].toLowerCase();
+            if (!dval.workingDays.includes(day)) {
               reject(`${dval.name} is not available in this day`);
+              return;
             }
-            get(query(child(dbRef,`Appointment/${dt}/${data.dphoneno}`)),limitToLast(1)).then(snapS=>{
-              if(!snapS.exists()){
-                set(child(dbRef,`Appointment/${dt}/${data.dphoneno}/${Date.now()}`),{
-                  apdate:data.apdate,
-                  dphoneno:data.dphoneno,
-                  pphoneno:data.pphoneno,
-                  id:uuid(),
-                  symptoms:data.symptoms,
-                  type:data.type,
-                  status:"queued",
-                  aptime:{ start:dval.workinghrs.start.toString().slice(0,5) , end : addTime(dval.workinghrs.start.toString().slice(0,5))},
-                })
-              }else{
-                const v=snapS.val();
-                const ts=Date.now();
-                set(child(dbRef,`Appointment/${dt}/${data.dphoneno}/${ts}`),{
-                  apdate:data.apdate,
-                  dphoneno:data.dphoneno,
-                  pphoneno:data.pphoneno,
-                  id:uuid(),
-                  symptoms:data.symptoms,
-                  type:data.type,
-                  status:"queued",
-                  aptime:{ start:v.aptime.end , end : addTime(v.aptime.end)},
-                  createdat:ts
-                }).then(()=>{
-                  resolve({
-                    apdate:data.apdate,
-                    dphoneno:data.dphoneno,
-                    pphoneno:data.pphoneno,
-                    id:uuid(),
-                    symptoms:data.symptoms,
-                    type:data.type,
-                    status:"queued",
-                    aptime:{ start:v.aptime.end , end : addTime(v.aptime.end)},
-                    createdAt:ts
+            get(
+              query(
+                child(dbRef, `Appointment/${data.apdate}/${data.dphoneno}`)
+              ),
+              limitToLast(1)
+            ).then((snapS) => {
+              if (!snapS.exists()) {
+                set(
+                  child(
+                    dbRef,
+                    `Appointment/${data.apdate}/${data.dphoneno}/${Date.now()}`
+                  ),
+                  {
+                    apdate: data.apdate,
+                    dphoneno: data.dphoneno,
+                    pphoneno: data.pphoneno,
+                    id: uuid(),
+                    symptoms: data.symptoms,
+                    type: data.type,
+                    status: "queued",
+                    aptime: {
+                      start: dval.workingHours.start.toString().slice(0, 5),
+                      end: addTime(
+                        dval.workingHours.start.toString().slice(0, 5)
+                      ),
+                    },
+                  }
+                )
+                  .then(() => {
+                    resolve({
+                      status: 200,
+                      response: {
+                        apdate: data.apdate,
+                        dphoneno: data.dphoneno,
+                        pphoneno: data.pphoneno,
+                        id: uuid(),
+                        symptoms: data.symptoms,
+                        type: data.type,
+                        status: "queued",
+                        aptime: {
+                          start: dval.workingHours.start.toString().slice(0, 5),
+                          end: addTime(
+                            dval.workingHours.start.toString().slice(0, 5)
+                          ),
+                        },
+                      },
+                    });
                   })
-                }).catch(err=>reject(err.message))
+                  .catch((err) => reject(err.message));
+              } else {
+                const v = snapS.val();
+                const ts = Date.now();
+                set(
+                  child(
+                    dbRef,
+                    `Appointment/${data.apdate}/${data.dphoneno}/${ts}`
+                  ),
+                  {
+                    apdate: data.apdate,
+                    dphoneno: data.dphoneno,
+                    pphoneno: data.pphoneno,
+                    id: uuid(),
+                    symptoms: data.symptoms,
+                    type: data.type,
+                    status: "queued",
+                    aptime: { start: v.aptime.end, end: addTime(v.aptime.end) },
+                    createdat: ts,
+                  }
+                )
+                  .then(() => {
+                    resolve({
+                      success: 200,
+                      response: {
+                        apdate: data.apdate,
+                        dphoneno: data.dphoneno,
+                        pphoneno: data.pphoneno,
+                        id: uuid(),
+                        symptoms: data.symptoms,
+                        type: data.type,
+                        status: "queued",
+                        aptime: {
+                          start: v.aptime.end,
+                          end: addTime(v.aptime.end),
+                        },
+                        createdAt: ts,
+                      },
+                    });
+                  })
+                  .catch((err) => reject(err.message));
               }
-            })
+            });
           }
-        })
+        });
       }
-    })
-    
-    // await fetch(`${CREATE_AP_URL}`, {
-    //   method: "POST",
-    //   body: data,
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((result) => {
-    //     if (result.success) resolve(result);
-    //     else reject(result.err);
-    //   })
-    //   .catch((err) => reject(err));
+    });
   });
 };
 
 export const getAppointment = async (data) => {
-  console.log("Get Appointment Called",data)
+  console.log("Get Appointment Called", data);
   return new Promise(async (resolve, reject) => {
-    const dt = moment(new Date()).format('YYYY-MM-DD');
+    const dt = moment(new Date()).format("YYYY-MM-DD");
+    console.log(data)
     if (data.forUser === "doctor") {
-      get(child(dbRef,`Appointment/${dt}/${data.dphoneno}`)).then((ss)=>{
-        if(!ss.exists()){
-          reject("No appointments are found for this doctor at this date")
-        }
-        else{
-          resolve(ss.val());
-        }
-      }).catch(err=>reject(err.message))
-    } else if (data.forUser === "patient") {
-      if(!data.status){
-
-      get(query(child(dbRef,`Appointment/${dt}`),orderByKey(data.pphoneno))).then(ss=>console.log(ss.val()))
+      if (!data.status) {
+        get(child(dbRef, `Appointment/${dt}/${data.dphoneNo}`))
+          .then((ss) => {
+            if (!ss.exists()) {
+              reject("No appointments are found for this doctor at this date");
+            } else {
+              resolve({ status: 200, response: ss.val() });
+            }
+          })
+          .catch((err) => reject(err.message));
+      } else {
+        get(
+          query(
+            child(`Appointment/${dt}/${data.dphoneNo}`),
+            orderByChild("status"),
+            equalTo(data.status)
+          )
+        ).then((ss) => {
+          if (!ss.exists()) {
+            reject("No appointments left today");
+          } else {
+            console.log(ss.val());
+          }
+        });
       }
-      // const url = data.status
-      //   ? GET_AP_URL +
-      //     `all?forUser=patient&status=${data.status}&pphoneNo=${data.pphoneNo}`
-      //   : GET_AP_URL + `all?forUser=patient&pphoneNo=${data.pphoneNo}`;
-      // await fetch(url, {
-      //   method: "GET",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      // })
-      //   .then((response) => response.json())
-      //   .then((result) => {
-      //     if (result.success) resolve(result);
-      //     else reject(result.response);
-      //   })
-      //   .catch((err) => reject(err));
-      
+    } else if (data.forUser == "patient") {
+      if (!data.status) {
+        get(child(dbRef, `Appointment/`)).then((ss) => {
+          if (!ss.exists()) {
+            resolve([]);
+            return;
+          }
+          var PatientArray = [];
+
+          Object.values(ss.val()).map((dno) => {
+            const allPatient = Object.values(dno);
+            allPatient.map((ppn) => {
+              const patient = Object.values(ppn);
+
+              if (patient[0].pphoneno == data.pphoneNo) {
+                PatientArray.push(patient);
+              }
+            });
+          });
+
+          resolve({ status: 200, response: PatientArray });
+        });
+      } else {
+        get(child(dbRef, `Appointment`))
+          .then((ss) => {
+            var PatientArray = [];
+            Object.values(ss.val()).map((dno) => {
+              const allPatient = Object.values(dno);
+              allPatient.map((ppn) => {
+                const patient = Object.values(ppn);
+                if (
+                  patient[0].status == "queued" &&
+                  patient[0].pphoneno == data.pphoneNo
+                ) {
+                  PatientArray.push(patient[0]);
+                }
+              });
+            });
+            resolve({ status: 200, response: PatientArray });
+          })
+          .catch((err) => reject(err.message));
+      }
     } else return;
   });
 };
 
 export const getTodayAppointment = async (data) => {
   return new Promise(async (resolve, reject) => {
-    const url =
-      GET_AP_URL +
-      `all?forUser=doctor&dphoneNo=${data.dphoneNo}&status=${data.status}`;
-    await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success) resolve(result);
-        else reject(result);
+    const dt = moment(new Date()).format("YYYY-MM-DD");
+    get(child(dbRef, `Appointment/${dt}/${data.dphoneNo}`))
+      .then((ss) => {
+        if (!ss.exists()) {
+          reject("No appointments are found for this doctor at this date");
+        } else {
+          var response = Object.values(ss.val());
+          console.log(response);
+          resolve({ status: 200, response: response });
+        }
       })
-      .catch((err) => reject(err));
+      .catch((err) => reject(err.message));
   });
 };
 export const cancelAppointment = async (data) => {
   return new Promise(async (resolve, reject) => {
-    await fetch(`${CANCEL_AP_URL}`, {
-      method: "DELETE",
-      body: data,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success) resolve(result);
-        else reject(result.err);
-      })
-      .catch((err) => reject(err));
+    console.log(data);
+    //console.log(`Appointment/${data.aptdate}/${data.dphoneno}/${data.pphoneno}`)
+    set(
+      query(
+        child(dbRef, `Appointment/${data.aptdate}/${data.dphoneno}/`),
+        orderByChild("pphoneno"),
+        equalTo(data.pphoneno)
+      ),
+      null
+    )
+      .then(() => resolve({ response: "Successfully deleted", status: 200 }))
+      .catch((err) => reject(err.message));
   });
 };
 

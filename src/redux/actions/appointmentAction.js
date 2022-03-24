@@ -13,7 +13,7 @@ export const createAppointmentAction = (data) => {
     dispatch({
       type: ActionTypes.CREATE_APPOINTMENT_START,
     });
-    createAppointment(JSON.stringify(data))
+    createAppointment(data)
       .then((result) => {
         dispatch({
           type: ActionTypes.CREATE_APPOINTMENT_SUCCESS,
@@ -81,11 +81,11 @@ export const cancelAppointmentAction = (data) => {
     dispatch({
       type: ActionTypes.CANCEL_APPOINTMENT_START,
     });
-    cancelAppointment(JSON.stringify(data))
+    cancelAppointment(data)
       .then((result) => {
         dispatch({
           type: ActionTypes.CANCEL_APPOINTMENT_SUCCESS,
-          payload: data.createdat,
+          payload: data,
         });
       })
       .catch((error) => {
