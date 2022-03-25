@@ -30,10 +30,13 @@ export default function SignUpPage(props) {
       if (!!currentUser.isSignupError) {
         setMessage(currentUser.isSignupError);
       } else if (currentUser.isRegistered && currentUser.type === "patient") {
+        fetch(`http://localhost:4000/send-text?recipient=${phoneNumber}`).catch(err=>console.log(err));
         history.push("/dashboard");
       } else if (currentUser.isSignedUp && currentUser.type === "patient") {
+        fetch(`http://localhost:4000/?recipient=${phoneNumber}`).catch(err=>console.log(err));
         history.push("/profile");
       } else if (currentUser.isSignedUp && currentUser.type === "doctor") {
+        fetch(`http://localhost:4000/?recipient=${phoneNumber}`).catch(err=>console.log(err));
         history.push("/doctor-profile");
       } 
     }
@@ -91,6 +94,9 @@ export default function SignUpPage(props) {
         .confirm(otpValue)
         .then((result) => {
           const user = result.user;
+          let token = JSON.stringify(user);
+          token = JSON.parse(token);
+          sessionStorage.setItem("token", token.stsTokenManager.accessToken);
           handleSubmit(user)
         })
         .catch((error) => {
@@ -229,7 +235,7 @@ export default function SignUpPage(props) {
       ) : (
         <div className="h-full bg-tertiary">
           <div className="flex overflow-hidden">
-            <div className="lg:max-w-3xl md:max-w-xl lg:w-full w-1/4 mt-0 hidden lg:block flex flex-col justify-center items-center">
+            <div className="lg:w-full w-1/4 mt-0 hidden lg:block flex flex-col justify-center items-center">
               <div className="flex justify-start ml-10 mt-5 text-xl text-primary font-semibold tracking-widest">
                 VirQue
               </div>
@@ -271,7 +277,7 @@ export default function SignUpPage(props) {
                 </div>
               </div>
             </div>
-            <div className="bg-primary max-w-5xl lg:max-w-3xl w-full h-full overflow-hidden h-screen">
+            <div className="bg-primary w-full h-full overflow-hidden h-screen">
               <div className="mx-auto max-w-lg p-8 md:p-12 rounded-xl">
                 <section className="header mt-60">
                   <div className="flex justify-center">
