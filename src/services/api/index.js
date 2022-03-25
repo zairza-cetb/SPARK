@@ -258,13 +258,13 @@ export const createDoctor = async (data) => {
     workingHours: data.workingHrs,
     modifiedAt: Date.now(),
   };
-  console.log(bodyObj);
+  //console.log(bodyObj);
   return new Promise(async (resolve, reject) => {
     set(child(dbRef, "Doctor/" + data.phoneNo + "/Profile"), bodyObj)
       .then(() => {
         console.log("Set");
         var updates = {};
-        updates["/Doctor" + data.phoneNo + "/isregistered"] = true;
+        updates["/Doctor/" + data.phoneNo + "/isregistered"] = true;
         update(dbRef, updates)
           .then((res) => {
             console.log(res, "Updated");
@@ -350,24 +350,25 @@ export const getAllDoctors = async () => {
 
 export const getDoctor = async (phoneno) => {
   return new Promise(async (resolve, reject) => {
-    await fetch(
-      `${GET_DOCTOR}?` +
-        new URLSearchParams({
-          phoneno: phoneno,
-        }),
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success) resolve(result.response);
-        else reject(result.err);
-      })
-      .catch((err) => reject(err.message));
+    console.log("Get Doctor Called",phoneno);
+    // await fetch(
+    //   `${GET_DOCTOR}?` +
+    //     new URLSearchParams({
+    //       phoneno: phoneno,
+    //     }),
+    //   {
+    //     method: "GET",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   }
+    // )
+    //   .then((response) => response.json())
+    //   .then((result) => {
+    //     if (result.success) resolve(result.response);
+    //     else reject(result.err);
+    //   })
+    //   .catch((err) => reject(err.message));
   });
 };
 
@@ -431,10 +432,11 @@ export const createAppointment = async (data) => {
               limitToLast(1)
             ).then((snapS) => {
               if (!snapS.exists()) {
+                var ts=Date.now();
                 set(
                   child(
                     dbRef,
-                    `Appointment/${data.apdate}/${data.dphoneno}/${Date.now()}`
+                    `Appointment/${data.apdate}/${data.dphoneno}/${ts}`
                   ),
                   {
                     apdate: data.apdate,
@@ -450,6 +452,7 @@ export const createAppointment = async (data) => {
                         dval.workingHours.start.toString().slice(0, 5)
                       ),
                     },
+                    createdat:ts
                   }
                 )
                   .then(() => {
@@ -469,6 +472,7 @@ export const createAppointment = async (data) => {
                             dval.workingHours.start.toString().slice(0, 5)
                           ),
                         },
+                        createdat:ts
                       },
                     });
                   })
@@ -609,15 +613,16 @@ export const getAppointment = async (data) => {
 
 export const getTodayAppointment = async (data) => {
   return new Promise(async (resolve, reject) => {
+    console.log(data)
     const dt = moment(new Date()).format("YYYY-MM-DD");
     get(child(dbRef, `Appointment/${dt}/${data.dphoneNo}`))
       .then((ss) => {
         if (!ss.exists()) {
           reject("No appointments are found for this doctor at this date");
         } else {
-          var response = Object.values(ss.val());
-          console.log(response);
-          resolve({ status: 200, response: response });
+          var r=Object.values(ss.val())
+          r=r.filter(rp=>rp.status==data.status)
+          resolve({status:200,response:r})
         }
       })
       .catch((err) => reject(err.message));
@@ -625,8 +630,6 @@ export const getTodayAppointment = async (data) => {
 };
 export const cancelAppointment = async (data) => {
   return new Promise(async (resolve, reject) => {
-    console.log(data);
-    //console.log(`Appointment/${data.aptdate}/${data.dphoneno}/${data.pphoneno}`)
     set(
       query(
         child(dbRef, `Appointment/${data.aptdate}/${data.dphoneno}/`),
@@ -642,19 +645,22 @@ export const cancelAppointment = async (data) => {
 
 export const updateAppointment = async (data) => {
   return new Promise(async (resolve, reject) => {
-    await fetch(`${UPDATE_AP_URL}`, {
-      method: "PUT",
-      body: data,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success) resolve(result.response);
-        else reject(result.err);
+    console.log(data)
+    var updates={};
+    updates[`Appointment/${data.apdate}/${data.dphoneno}/${data.createdat}/status`]=data.status;
+    update(dbRef,updates).then(ss=>{
+      get(child(dbRef,`Appointment/${data.apdate}/${data.dphoneno}/${data.createdat}`)).then(snapShot=>{
+        resolve({
+          status:200, 
+          message:"Successfully Updated",
+          data:snapShot.val()
+        })
+      }).catch(err=>{
+        reject(err.message)
       })
-      .catch((err) => reject(err.message));
+    }).catch(err=>{
+      reject(err.message)
+    });
   });
 };
 export const testRoute = async () => {

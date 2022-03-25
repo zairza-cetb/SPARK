@@ -58,7 +58,7 @@ export const getAppointmentAction = (data) => {
 
 export const updateAppointmentAction = (data) => {
   return (dispatch) => {
-    updateAppointment(JSON.stringify(data))
+    updateAppointment(data)
       .then((response) => {
         dispatch({
           type: ActionTypes.UPDATE_AP_START,
