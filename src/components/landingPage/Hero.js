@@ -42,23 +42,23 @@ function Hero() {
             </h3>
             <div className="flex justify-center">
               <button
-                className="inline-flex text-primary font-semibold bg-white border-0 py-2 px-6 focus:outline-none cursor-pointer hover:opacity-80 rounded-full text-lg"
+                className="inline-flex text-primary font-semibold bg-white border-0 py-2 px-6 focus:outline-none cursor-pointer hover:opacity-80 rounded-md text-lg"
                 onClick={(e) => setClicked(true)}
               >
                 Get started
               </button>
               <a href="https://youtu.be/tjcLdrwBgHY">
-                <button className="ml-4 inline-flex text-primary font-semibold bg-white border-0 py-2 px-6 focus:outline-none cursor-pointer hover:bg-gray-200 rounded-full text-lg">
+                <button className="ml-4 inline-flex text-primary font-semibold bg-white border-0 py-2 px-6 focus:outline-none cursor-pointer hover:bg-gray-200 rounded-md text-lg">
                   Demo
                 </button>
               </a>
             </div>
           </div>
-          <div className="lg:max-w-xl md:max-w-lg lg:w-full md:w-1/2 w-5/6">
+          <div className="lg:max-w-xl md:max-w-lg lg:w-md md:w-1/2 w-5/6">
             <Lottie animationData={DoctorAnimation} />
           </div>
         </div>
-        {/* <div className="w-20 h-40 absolute bg-light rounded-full top-20 -left-10 transform -rotate-45 hidden md:block"></div> */}
+        {/* <div className="w-20 h-40 absolute bg-light rounded-md top-20 -left-10 transform -rotate-45 hidden md:block"></div> */}
         {/* <div className="w-28 h-32 absolute rounded-xl bg-light bottom-10 right-8 transform rotate-45 hidden md:block"></div> */}
       </section>
     );

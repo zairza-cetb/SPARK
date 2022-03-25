@@ -163,7 +163,7 @@ function DoctorDashboard() {
         <aside id="sidenav-open" className="h-screen">
           <nav className="flex flex-col justify-between h-full p-5 bg-gray-50">
             <div className="sidebar-title self-center my-10 uppercase text-2xl tracking-widest2 font-bold text-primary">
-              Spark
+              VirQue
             </div>
             <div>
               <button

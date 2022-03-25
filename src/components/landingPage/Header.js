@@ -69,7 +69,7 @@ function Header() {
             Apply as Doctor
           </button>
           <a
-            className="inline-flex items-center text-primary bg-white border-0 py-2 px-4 focus:outline-none hover:opacity-80 rounded-full font-semibold"
+            className="inline-flex items-center text-primary bg-white border-0 py-2 px-4 focus:outline-none hover:opacity-80 rounded-md font-semibold"
             href="/signin"
             onClick={(e) => setPatient(true)}
           >

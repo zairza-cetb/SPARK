@@ -32,7 +32,7 @@
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.8"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "craco --openssl-legacy-provider start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
