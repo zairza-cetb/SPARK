@@ -31,7 +31,9 @@ export default function SignUpPage(props) {
         setMessage(currentUser.isSignupError);
       } else if (currentUser.isRegistered && currentUser.type === "patient") {
         history.push("/dashboard");
-      } else if (currentUser.isSignedUp && currentUser.type === "patient") {
+      } else if (currentUser.isRegistered && currentUser.type === "doctor") {
+        history.push("/doctor-dashboard");
+      }else if (currentUser.isSignedUp && currentUser.type === "patient") {
         history.push("/profile");
       } else if (currentUser.isSignedUp && currentUser.type === "doctor") {
         history.push("/doctor-profile");
@@ -63,7 +65,8 @@ export default function SignUpPage(props) {
   };
 
   const sendOTP = () => {
-    let number = "+91" + phoneNumber;
+    console.log("PHONENUMBER",phoneNumber)
+    let number = "+1" + phoneNumber;
     if (number.length >= 12) {
       generateRecaptcha();
       let appVerifier = window.recaptchaVerifier;
