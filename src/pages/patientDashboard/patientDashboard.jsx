@@ -363,8 +363,8 @@ function PatientDashboard() {
             contentLabel="Book a slot"
             ariaHideApp={false}
           >
-            <div className="flex flex-row justify-between">
-              <div className="flex flex-col w-md space-y-3">
+            <div className="flex flex-row justify-between items-center">
+              <div className="flex flex-col w-full space-y-3">
                 <p className="text-xl font-bold mb-4 text-bg uppercase">
                   Book a new appointment
                 </p>
@@ -432,8 +432,8 @@ function PatientDashboard() {
                   Book Now
                 </button>
               </div>
-              <div className="hidden md:flex md:flex-col justify-div items-center">
-                <Lottie animationData={BookAppointmentAnimation} />
+              <div class="">
+                <Lottie class="w-full h-full" animationData={BookAppointmentAnimation} />
               </div>
             </div>
           </Modal>
