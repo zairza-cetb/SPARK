@@ -4,7 +4,7 @@ import DefaultAvatar from "./DefaultAvatar";
 const ProfileCard = (props) => {
   const { name, about, profile_dp, hospital, address, working_hrs } = props;
   return (
-    <div className="rounded-md bg-gray-50 items-center justify-end mx-auto md:p-8 p-2">
+    <div className="rounded-md bg-gray-50 text-center items-center justify-end mx-auto md:p-8 p-2">
       <div className="mx-24 my-4 z-0">
         {profile_dp ? <img src={profile_dp} alt="" /> : <DefaultAvatar />}
       </div>

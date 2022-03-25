@@ -255,7 +255,7 @@ function PatientDashboard() {
     return (
       <div className="main-dashboard">
         <aside id="sidenav-open" className="h-screen">
-          <nav className="flex flex-col justify-between h-full p-5 bg-gray-50">
+          <nav className="flex flex-col justify-between h-md p-5 bg-gray-50">
             <div className="sidebar-title self-center my-10 uppercase text-2xl tracking-widest2 font-bold text-primary">
               Virque
             </div>
@@ -287,9 +287,9 @@ function PatientDashboard() {
 
             <div className="grid justify-between w-64">
               <Lottie className="mx-2" animationData={SideBarAnimation} />
-              <div className="flex mt-2 bg-primary text-white cursor-pointer mx-10 items-center justify-center rounded-full">
+              <div className="flex mt-2 bg-primary text-white cursor-pointer mx-10 items-center justify-center rounded-md">
                 <button
-                  className="flex space-x-3 py-2 px-6 text-md items-center justify-center rounded-full"
+                  className="flex space-x-3 py-2 px-6 text-md items-center justify-center rounded-md"
                   onClick={handleLogout}
                 >
                   <HiLogout className="text-lg" />
@@ -341,7 +341,7 @@ function PatientDashboard() {
             ariaHideApp={false}
           >
             <div className="flex flex-row justify-between">
-              <div className="flex flex-col w-full space-y-3">
+              <div className="flex flex-col w-md space-y-3">
                 <p className="text-xl font-bold mb-4 text-bg uppercase">
                   Book a new appointment
                 </p>
@@ -377,7 +377,7 @@ function PatientDashboard() {
                   placeholder="Symptoms"
                   className="text-sm mb-4 outline-none bg-lighter rounded-md py-2 px-2"
                 />
-                <div className="flex flex-row w-full items-div justify-evenly my-4">
+                <div className="flex flex-row w-md items-div justify-evenly my-4">
                   <div className="flex flex-row items-div space-x-2">
                     <input
                       type="radio"
@@ -418,13 +418,13 @@ function PatientDashboard() {
             <h1 className="mx-2 text-xl font-bold text-primary">
               <input
                 type="text"
-                className="md:w-96 w-82 text-sm md:text-md py-2.5 px-4 md:ml-5 rounded-full outline-none bg-gray-100"
+                className="md:w-96 w-82 text-sm md:text-md py-2.5 px-4 md:ml-5 rounded-md outline-none bg-gray-100"
                 placeholder="Enter search keywords"
               />
             </h1>
             <p className="text-sm hidden md:flex md:text-xl">
-              <span className="text-lg md:text-xl mr-6 text-white bg-primary rounded-full p-1 px-4">{date}</span>
-              <span className="text-lg md:text-xl md:mr-12 text-white bg-primary rounded-full p-1 px-4">
+              <span className="text-lg md:text-xl mr-6 text-primary p-1 px-4">{date}</span>
+              <span className="text-lg md:text-xl md:mr-12 text-primary p-1 px-4">
                 {time}
               </span>
             </p>
@@ -490,7 +490,7 @@ function PatientDashboard() {
                 <div className="w-full lg:w-1/3">
                   <div className="flex flex-col w-full">
                     <div className="flex flex-col flex-grow lg:m-10 mx-auto my-10">
-                      <h3 className="grid md:flex text-2xl text-md font-bold text-primary mb-10 pl-4">
+                      <h3 className="grid md:flex text-2xl text-md font-bold text-primary mb-6 pl-4">
                         Doctor's details
                       </h3>
                       {console.log("DOCTOR DETAILA",doctorDetails)}
