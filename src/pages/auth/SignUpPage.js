@@ -68,7 +68,7 @@ export default function SignUpPage(props) {
 
   const sendOTP = () => {
     console.log("PHONENUMBER",phoneNumber)
-    let number = "+1" + phoneNumber;
+    let number = "+91" + phoneNumber;
     if (number.length >= 12) {
       generateRecaptcha();
       let appVerifier = window.recaptchaVerifier;
