@@ -135,7 +135,7 @@ export const loginPatient = async (data) => {
 
 export const loginDoctor = async (data) => {
   return new Promise(async (resolve, reject) => {
-    get(child(dbRef, "Doctor/" + data.phoneNo)).then((snapShot) => {
+    get(child(dbRef, "Doctor/" + data.phoneNumber)).then((snapShot) => {
       if (!snapShot.exists()) {
         set(child(dbRef, "Doctor/" + data.phoneNumber), {
           id: data.uid,
@@ -158,7 +158,7 @@ export const loginDoctor = async (data) => {
         const val = snapShot.val();
 
         var updates = {};
-        updates["/Doctor/" + data.phoneNo + "/isloggedin"] = true;
+        updates["/Doctor/" + data.phoneNumber + "/isloggedin"] = true;
         update(dbRef, updates).then(() => {
           console.log("Updated");
           resolve({ ...val, isloggedin: true });
@@ -223,18 +223,20 @@ export const updatePatient = async (data) => {
 
 export const updateDoctor = async (data) => {
   return new Promise(async (resolve, reject) => {
+    console.log(data)
     var updates = {};
     updates["name"] = data.name;
     updates["phoneno"] = data.phoneNo;
     updates["qualifications"] = data.qualifications;
     updates["email"] = data.email;
-    updates["dept"] = data.dept;
-    updates["hospital"] = data.hospital;
+    updates["department"] = data.department;
+    updates["hospital"] = data.hospitalName;
     updates["age"] = data.age;
-    updates["specializations"] = data.specializations;
+    updates["specializations"] = data.specialisations;
     updates["address"] = data.address;
     updates["workingDays"] = data.workingDays;
-    updates["workingHours"] = data.workingHours;
+    updates["workingHours"] = data.workingHrs;
+    updates["modifiedAt"]=Date.now()
     update(child(dbRef, "Doctor/" + data.phoneNo + "/Profile/"), updates)
       .then(() => resolve({ ...updates, type: "doctor" }))
       .catch((err) => reject(err.message));
@@ -351,6 +353,13 @@ export const getAllDoctors = async () => {
 export const getDoctor = async (phoneno) => {
   return new Promise(async (resolve, reject) => {
     console.log("Get Doctor Called",phoneno);
+    get(child(dbRef,`Doctor/${phoneno}`)).then(ss=>{
+      if(!ss.exists()){
+        reject("The doctor with this phone number doesnt exists");
+      }
+      const val=ss.val();
+      console.log("VAAAAAAAAAAAAAAAAAAAAAAAALLLLLLLLLLLLLLLL",val);
+    })
     // await fetch(
     //   `${GET_DOCTOR}?` +
     //     new URLSearchParams({

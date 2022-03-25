@@ -56,6 +56,8 @@ function DoctorProfile() {
   const history = useHistory();
   const currentUser = useSelector((state) => state.authReducer);
 
+
+  console.log("Registered User",registeredUser)
   useEffect(() => {
     if (!authUser.isSignedUp) history.push("/");
     if (authUser.type === "patient") history.goBack();
