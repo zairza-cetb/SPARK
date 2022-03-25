@@ -49,7 +49,7 @@ function WaitingListItemButton({
     buttonBorderColor = "border-white";
     buttonTextColor = "text-white";
   } else if (appointmentStatus === "New Appointment") {
-    buttonColor = "bg-dark";
+    buttonColor = "bg-primary";
     buttonTextColor = "text-white";
     buttonBorderColor = "border-white";
   } else if (appointmentStatus === "completed") {

@@ -1,12 +1,12 @@
 function Services() {
   return (
     <section className="text-gray-600 body-font bg-gray-100">
-      <div className="container px-5 py-24 mx-auto sm:px-20">
+      <div className="container px-5 py-24 mx-auto sm:px-5">
         <h1 className="sm:text-4xl text-3xl font-bold title-font text-center text-gray-900 mb-20">
           Why <span className="text-primary">Us?</span>
         </h1>
-        <div className="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 md:space-y-0 space-y-6">
-          <div className="p-4 md:w-1/3 flex">
+        <div className="flex gap-10">
+          <div className="p-8 md:w-1/3 flex bg-secondary rounded-md">
             <div className="w-12 h-12 inline-flex items-center justify-center rounded-full bg-primary text-white mb-4 flex-shrink-0">
               <svg
                 viewBox="0 0 24 24"
@@ -31,7 +31,7 @@ function Services() {
               </p>
             </div>
           </div>
-          <div className="p-4 md:w-1/3 flex">
+          <div className="p-8 md:w-1/3 flex bg-secondary rounded-md mt-0">
             <div className="w-12 h-12 inline-flex items-center justify-center rounded-full bg-primary text-white mb-4 flex-shrink-0">
               <svg
                 width="24"
@@ -58,7 +58,7 @@ function Services() {
               </p>
             </div>
           </div>
-          <div className="p-4 md:w-1/3 flex">
+          <div className="p-8 md:w-1/3 flex bg-secondary rounded-md">
             <div className="w-12 h-12 inline-flex items-center justify-center rounded-full bg-primary text-white mb-4 flex-shrink-0">
               <svg
                 fill="none"
@@ -83,7 +83,9 @@ function Services() {
               </p>
             </div>
           </div>
-          <div className="p-4 md:w-1/3 flex">
+        </div>
+        <div className="flex gap-10 mt-10">
+          <div className="p-8 md:w-1/3 flex bg-secondary rounded-md">
             <div className="w-12 h-12 inline-flex items-center justify-center rounded-full bg-primary text-white mb-4 flex-shrink-0">
               <svg
                 fill="none"
@@ -110,7 +112,7 @@ function Services() {
               </p>
             </div>
           </div>
-          <div className="p-4 md:w-1/3 flex">
+          <div className="p-8 md:w-1/3 flex bg-secondary rounded-md">
             <div className="w-12 h-12 inline-flex items-center justify-center rounded-full bg-primary text-white mb-4 flex-shrink-0">
               <svg
                 fill="none"
@@ -133,7 +135,7 @@ function Services() {
               </p>
             </div>
           </div>
-          <div className="p-4 md:w-1/3 flex">
+          <div className="p-8 md:w-1/3 flex bg-secondary rounded-md">
             <div className="w-12 h-12 inline-flex items-center justify-center rounded-full bg-primary text-white mb-4 flex-shrink-0">
               <svg
                 width="24"

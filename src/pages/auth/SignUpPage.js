@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Lottie from "lottie-react";
+import SignupAnimation from "../../images/signup.json";
 import Login from "../../images/Mobile-login-rafiki.png";
 import authentication from "../../services/firebase/index";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
@@ -22,7 +24,7 @@ export default function SignUpPage(props) {
     if (currentUser.isLoggedIn) history.push("/dashboard");
   }, []);
   useEffect(() => {
-    console.log(currentUser)
+    console.log(currentUser);
     if (currentUser.isLoginLoading) {
       console.log("LOADING");
     } else {
@@ -39,11 +41,9 @@ export default function SignUpPage(props) {
       } else if (currentUser.isSignedUp && currentUser.type === "doctor") {
         fetch(`http://localhost:4000/?recipient=${phoneNumber}`).catch(err=>console.log(err));
         history.push("/doctor-profile");
-      } 
+      }
     }
   }, [currentUser]);
-
-
 
   const handleNumberChange = (e) => {
     setPhoneNumber(e.target.value);
@@ -72,11 +72,11 @@ export default function SignUpPage(props) {
     if (number.length >= 12) {
       generateRecaptcha();
       let appVerifier = window.recaptchaVerifier;
-      console.log("G")
+      console.log("G");
       signInWithPhoneNumber(authentication, number, appVerifier)
         .then((confirmationResult) => {
           window.confirmationResult = confirmationResult;
-          console.log("G2")
+          console.log("G2");
           setOTP("");
           setToggleOTPCard(!toggleOTPCard);
           // ...
@@ -101,19 +101,18 @@ export default function SignUpPage(props) {
           sessionStorage.setItem("token", token.stsTokenManager.accessToken);
           handleSubmit(user)
         })
-        .catch((error) => {
-        });
+        .catch((error) => {});
     }
   };
 
   const handleSubmit = async (data) => {
-    console.log(data)
+    console.log(data);
     setLoading(true);
     if (type === "patient") dispatch(patientLogin(data));
     else dispatch(doctorLogin(data));
   };
 
-// console.log(type)
+  // console.log(type)
 
   // const generateResendRecaptcha = () => {
   //   window.recaptchaVerifier = new RecaptchaVerifier(
@@ -149,11 +148,34 @@ export default function SignUpPage(props) {
         <div className="h-full bg-tertiary">
           <div className="flex overflow-hidden">
             <div className="lg:w-full w-1/4 mt-0 hidden lg:block flex flex-col justify-center items-center">
-              <div className="flex justify-start ml-10 mt-5 text-xl text-primary font-semibold tracking-widest">
+              <a
+                href="/"
+                className="flex justify-start ml-10 mt-5 text-xl text-primary font-semibold tracking-widest cursor-pointer"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 91 104"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="mr-2"
+                >
+                  <path
+                    d="M33.0594 7.22629V13.6461H58.7385V7.22629C58.7385 3.68137 61.6074 0.806519 65.1583 0.806519C68.7092 0.806519 71.5781 3.68137 71.5781 7.22629V13.6461H81.2077C86.5241 13.6461 90.8374 17.9573 90.8374 23.2757V32.9054H0.960602V23.2757C0.960602 17.9573 5.27188 13.6461 10.5903 13.6461H20.2199V7.22629C20.2199 3.68137 23.0887 0.806519 26.6397 0.806519C30.1906 0.806519 33.0594 3.68137 33.0594 7.22629ZM0.960602 39.3251H90.8374V93.8932C90.8374 99.2095 86.5241 103.523 81.2077 103.523H10.5903C5.27188 103.523 0.960602 99.2095 0.960602 93.8932V39.3251Z"
+                    fill="#1B87C4"
+                  />
+                  <path
+                    d="M18.6482 70.0769H1.24896L1.24893 75.894H23.0976L29.9081 63.1315L42.5694 86.0068C42.5694 86.0068 43.236 87.1137 45.5217 87.1137C47.8074 87.1137 48.4907 86.0068 48.4907 86.0068L59.7297 67.9279L64.7972 75.894H90.3719V70.0769H68.7555C68.7555 70.0769 63.9217 60.831 62.4643 59.7225C61.007 58.6139 60.6091 58.6384 59.2899 58.7466C58.2433 58.8324 58.4628 58.3503 56.8805 59.7225C55.2982 61.0946 45.5217 77.5669 45.5217 77.5669C45.5217 77.5669 33.9836 55.6908 32.7861 54.2871C31.5886 52.8834 31.0724 52.9129 29.6883 52.8914C28.2544 52.869 27.5304 53.2788 26.4453 54.2871C25.3601 55.2954 18.6482 70.0769 18.6482 70.0769Z"
+                    fill="white"
+                    stroke="white"
+                  />
+                </svg>
                 VirQue
-              </div>
+              </a>
               <div className="h-full flex flex-col justify-center items-center">
-                <img src={Login} style={{ height: "500px" }} alt="Login" />
+                <div className="lg:max-w-xl md:max-w-lg lg:w-md md:w-1/2 w-5/6">
+                  <Lottie animationData={SignupAnimation} />
+                </div>
                 <div className="text-xl text-primary font-semibold">
                   Let's get you setup!
                 </div>
@@ -194,7 +216,9 @@ export default function SignUpPage(props) {
             <div className="bg-primary w-full h-full overflow-hidden h-screen">
               <div className="mx-auto max-w-lg p-8 md:p-12 rounded-xl">
                 <section className="header mt-40 lg:mt-60">
-                  <div className="flex justify-center">
+                  
+                  <div className="flex items-center justify-center">
+                    
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       class="h-10 w-10 mb-5"
@@ -207,7 +231,9 @@ export default function SignUpPage(props) {
                         clip-rule="evenodd"
                       />
                     </svg>
+                    
                   </div>
+                  
                   <div className="number mb-6 pt-3 rounded-xl bg-light">
                     <input
                       placeholder="Enter your number"
@@ -215,7 +241,7 @@ export default function SignUpPage(props) {
                       id="number"
                       value={phoneNumber}
                       onChange={(e) => handleNumberChange(e)}
-                      className="bg-light rounded-full w-full text-gray-700 focus:outline-none focus:border-primary transition duration-500 px-3 pb-3 tracking-widest"
+                      className="bg-light rounded-full w-full text-gray-800 focus:outline-none focus:border-primary transition duration-500 px-3 pb-3 tracking-widest"
                     />
                   </div>
 
@@ -232,7 +258,6 @@ export default function SignUpPage(props) {
             </div>
           </div>
           <div id="recaptcha-container" />
-
         </div>
       ) : (
         <div className="h-full bg-tertiary">
@@ -296,7 +321,7 @@ export default function SignUpPage(props) {
                       />
                     </svg>
                   </div>
-  
+
                   <div className="otp mb-6 pt-3 rounded-xl bg-light">
                     <input
                       placeholder="Enter the OTP"
@@ -335,5 +360,4 @@ export default function SignUpPage(props) {
       )}
     </div>
   );
-
 }
