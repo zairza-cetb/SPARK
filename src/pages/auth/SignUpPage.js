@@ -34,8 +34,9 @@ export default function SignUpPage(props) {
       } else if (currentUser.isRegistered && currentUser.type === "patient") {
         fetch(`http://localhost:4000/send-text?recipient=${phoneNumber}`).catch(err=>console.log(err));
         history.push("/dashboard");
-      } else if (currentUser.isSignedUp && currentUser.type === "patient") {
-        fetch(`http://localhost:4000/?recipient=${phoneNumber}`).catch(err=>console.log(err));
+      } else if (currentUser.isRegistered && currentUser.type === "doctor") {
+        history.push("/doctor-dashboard");
+      }else if (currentUser.isSignedUp && currentUser.type === "patient") {
         history.push("/profile");
       } else if (currentUser.isSignedUp && currentUser.type === "doctor") {
         fetch(`http://localhost:4000/?recipient=${phoneNumber}`).catch(err=>console.log(err));
@@ -66,7 +67,8 @@ export default function SignUpPage(props) {
   };
 
   const sendOTP = () => {
-    let number = "+91" + phoneNumber;
+    console.log("PHONENUMBER",phoneNumber)
+    let number = "+1" + phoneNumber;
     if (number.length >= 12) {
       generateRecaptcha();
       let appVerifier = window.recaptchaVerifier;
