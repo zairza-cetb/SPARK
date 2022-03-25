@@ -49,7 +49,7 @@ function WaitingListItemButton({
     buttonBorderColor = "border-white";
     buttonTextColor = "text-white";
   } else if (appointmentStatus === "New Appointment") {
-    buttonColor = "bg-dark";
+    buttonColor = "bg-bg";
     buttonTextColor = "text-white";
     buttonBorderColor = "border-white";
   } else if (appointmentStatus === "completed") {
@@ -65,7 +65,7 @@ function WaitingListItemButton({
       onClick={() => {
         if (appointmentStatus === "New Appointment" || appointmentStatus ==="Cancel") setClicked(true);
       }}
-      className={`${buttonColor} ${buttonTextColor} ${PaddingButton} md:mt-0 mt-5 outline-none px-4 py-2 flex flex-row justify-center space-x-2 items-center border ${buttonBorderColor} rounded-md`}
+      className={`${buttonColor} ${buttonTextColor} ${PaddingButton} md:mt-0 mt-5 outline-none px-4 py-2 flex flex-row justify-center space-x-2 items-center border ${buttonBorderColor} rounded-full`}
     >
       <p>{capitalize(appointmentStatus)}</p>
       {loading && (appointmentStatus ==="New Appointment" || appointmentStatus ==="Cancel" || appointmentStatus ==="Next") ? (

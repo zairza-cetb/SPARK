@@ -256,40 +256,40 @@ function PatientDashboard() {
       <div className="main-dashboard">
         <aside id="sidenav-open" className="h-screen">
           <nav className="flex flex-col justify-between h-full p-5 bg-gray-50">
-            <div className="sidebar-title self-center my-10 uppercase text-2xl tracking-widest2 font-bold text-dark">
-              Spark
+            <div className="sidebar-title self-center my-10 uppercase text-2xl tracking-widest2 font-bold text-primary">
+              Virque
             </div>
             <div>
               <button
                 onClick={handleDashboard}
-                className="flex items-center p-3 mb-4 rounded-xl hover:bg-gray-200"
+                className="flex items-center p-3 mb-4 rounded-xl"
               >
                 <MdDashboard className="mr-3 text-3xl text-primary" />
-                <span className="text-gray-900 text-xl">Dashboard</span>
+                <span className="text-primary text-xl">Dashboard</span>
               </button>
 
               <button
                 onClick={handleProfile}
-                className="flex items-center p-3 mb-4 rounded-xl hover:bg-gray-200"
+                className="flex items-center p-3 mb-4 rounded-xl"
               >
                 <MdPerson className="mr-3 text-3xl text-primary" />
-                <span className="text-gray-900 text-xl">Profile</span>
+                <span className="text-primary text-xl">Profile</span>
               </button>
 
               <button
                 onClick={handleInventory}
-                className="flex items-center p-3 mb-4 rounded-xl hover:bg-gray-200"
+                className="flex items-center p-3 mb-4 rounded-xl"
               >
                 <MdFolder className="mr-3 text-3xl text-primary" />
-                <span className="text-gray-900 text-xl">Inventory</span>
+                <span className="text-primary text-xl">Inventory</span>
               </button>
             </div>
 
             <div className="grid justify-between w-64">
-              <Lottie animationData={SideBarAnimation} />
-              <div className="flex mt-2 bg-dark text-white cursor-pointer md:rounded-md items-center justify-center rounded-lg ">
+              <Lottie className="mx-2" animationData={SideBarAnimation} />
+              <div className="flex mt-2 bg-primary text-white cursor-pointer mx-10 items-center justify-center rounded-full">
                 <button
-                  className="flex space-x-3 py-2 px-6 text-md items-center justify-center"
+                  className="flex space-x-3 py-2 px-6 text-md items-center justify-center rounded-full"
                   onClick={handleLogout}
                 >
                   <HiLogout className="text-lg" />
@@ -342,7 +342,7 @@ function PatientDashboard() {
           >
             <div className="flex flex-row justify-between">
               <div className="flex flex-col w-full space-y-3">
-                <p className="text-xl font-bold mb-4 text-primary uppercase">
+                <p className="text-xl font-bold mb-4 text-bg uppercase">
                   Book a new appointment
                 </p>
                 <p className="font-semibold">Pick a date :</p>
@@ -415,7 +415,7 @@ function PatientDashboard() {
             </div>
           </Modal>
           <div className="md:flex grid items-center justify-between">
-            <h1 className="mx-2 text-xl font-bold text-gray-900">
+            <h1 className="mx-2 text-xl font-bold text-primary">
               <input
                 type="text"
                 className="md:w-96 w-82 text-sm md:text-md py-2.5 px-4 md:ml-5 rounded-full outline-none bg-gray-100"
@@ -423,16 +423,16 @@ function PatientDashboard() {
               />
             </h1>
             <p className="text-sm hidden md:flex md:text-xl">
-              <span className="text-lg md:text-xl mr-6 text-dark">{date}</span>
-              <span className="text-lg md:text-xl md:mr-12 text-dark">
+              <span className="text-lg md:text-xl mr-6 text-white bg-primary rounded-full p-1 px-4">{date}</span>
+              <span className="text-lg md:text-xl md:mr-12 text-white bg-primary rounded-full p-1 px-4">
                 {time}
               </span>
             </p>
           </div>
           <section className="grid p-6">
-            <span className="text-sm md:hidden mr-6 text-dark">{date}</span>
-            <span className="text-sm md:hidden md:mr-12 text-dark">{time}</span>
-            <h1 className="lg:text-4xl md:text-3xl text-xl font-semibold mt-4 text-dark">
+            <span className="text-sm md:hidden mr-6 text-primary">{date}</span>
+            <span className="text-sm md:hidden md:mr-12 text-primary">{time}</span>
+            <h1 className="lg:text-4xl md:text-3xl text-xl font-semibold mt-4 text-primary">
               Welcome, {userName.name}
             </h1>
             <h4 className="md:text-lg text-md text-gray-600 mt-3">
@@ -456,7 +456,7 @@ function PatientDashboard() {
               <div className="w-full lg:w-2/3">
                 <div className="flex flex-col w-full p-6">
                   <div className="grid md:flex flex-row w-full items-center mt-4 justify-between">
-                    <h3 className="grid md:flex text-2xl text-md font-bold text-dark">
+                    <h3 className="grid md:flex text-2xl text-md font-bold text-primary">
                       Waiting List
                     </h3>
                     <WaitingListItemButton
@@ -490,7 +490,7 @@ function PatientDashboard() {
                 <div className="w-full lg:w-1/3">
                   <div className="flex flex-col w-full">
                     <div className="flex flex-col flex-grow lg:m-10 mx-auto my-10">
-                      <h3 className="grid md:flex text-2xl text-md font-bold text-dark mb-10 pl-4">
+                      <h3 className="grid md:flex text-2xl text-md font-bold text-primary mb-10 pl-4">
                         Doctor's details
                       </h3>
                       {console.log("DOCTOR DETAILA",doctorDetails)}
@@ -514,7 +514,7 @@ function PatientDashboard() {
           ) : (
             <section className="flex flex-wrap p-6 justify-evenly">
               <div className="items-center mt-4">
-                <h3 className="mb-5 flex text-2xl text-md font-bold text-dark">
+                <h3 className="mb-5 flex text-2xl text-md font-bold text-primary">
                   You can book your appointment here :
                 </h3>
                 <WaitingListItemButton
