@@ -1,14 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Login from "../../images/Mobile-login-rafiki.png";
 import authentication from "../../services/firebase/index";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { doctorLogin, patientLogin } from "../../redux/actions/userAuthAction";
+import { useHistory } from "react-router-dom";
 
-export default function SignUpPage() {
+export default function SignUpPage(props) {
   const [phoneNumber, setPhoneNumber] = useState("");
-
+  const dispatch = useDispatch();
+  const type = props.location.state.type;
   const [otp, setOTP] = useState("");
+  const history = useHistory();
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const currentUser = useSelector((state) => state.authReducer);
 
   const [toggleOTPCard, setToggleOTPCard] = useState(false);
+
+  useEffect(() => {
+    if (currentUser.isLoggedIn) history.push("/dashboard");
+  }, []);
+  useEffect(() => {
+    console.log(currentUser)
+    if (currentUser.isLoginLoading) {
+      console.log("LOADING");
+    } else {
+      setLoading(false);
+      if (!!currentUser.isSignupError) {
+        setMessage(currentUser.isSignupError);
+      } else if (currentUser.isRegistered && currentUser.type === "patient") {
+        history.push("/dashboard");
+      } else if (currentUser.isSignedUp && currentUser.type === "patient") {
+        history.push("/profile");
+      } else if (currentUser.isSignedUp && currentUser.type === "doctor") {
+        history.push("/doctor-profile");
+      } 
+    }
+  }, [currentUser]);
+
+
 
   const handleNumberChange = (e) => {
     setPhoneNumber(e.target.value);
@@ -32,13 +63,15 @@ export default function SignUpPage() {
   };
 
   const sendOTP = () => {
-    let number = "+91" + phoneNumber;
+    let number = "+1" + phoneNumber;
     if (number.length >= 12) {
       generateRecaptcha();
       let appVerifier = window.recaptchaVerifier;
+      console.log("G")
       signInWithPhoneNumber(authentication, number, appVerifier)
         .then((confirmationResult) => {
           window.confirmationResult = confirmationResult;
+          console.log("G2")
           setOTP("");
           setToggleOTPCard(!toggleOTPCard);
           // ...
@@ -58,12 +91,21 @@ export default function SignUpPage() {
         .confirm(otpValue)
         .then((result) => {
           const user = result.user;
-          console.log(user);
+          handleSubmit(user)
         })
         .catch((error) => {
         });
     }
   };
+
+  const handleSubmit = async (data) => {
+    console.log(data)
+    setLoading(true);
+    if (type === "patient") dispatch(patientLogin(data));
+    else dispatch(doctorLogin(data));
+  };
+
+// console.log(type)
 
   // const generateResendRecaptcha = () => {
   //   window.recaptchaVerifier = new RecaptchaVerifier(

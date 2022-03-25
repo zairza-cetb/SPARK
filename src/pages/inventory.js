@@ -210,24 +210,24 @@ function Inventory() {
                           <div className="p-4 lg:w-1/4 w-full" key={index}>
                             <div className="grid border-2 border-gray-200 px-4 py-6 rounded-lg">
                               <h2 className="title-font text-center font-medium text-2xl md:text-lg lg:text-xl 2xl:text-3xl text-gray-900">
-                                {item[0]?.apdate}
+                                {item?.apdate}
                               </h2>
                               <p className="leading-relaxed text-center capitalize mt-5">
-                                Type: {item[0]?.type}
+                                Type: {item?.type}
                               </p>
                               <p className="truncate mt-2 text-center">
-                                Symptoms: {item[0]?.symptoms}{" "}
+                                Symptoms: {item?.symptoms}{" "}
                               </p>
 
                               <div className="mt-4 flex justify-center">
                                 <WaitingListItemButton
                                   appointmentStatus={
-                                    item[0]?.status === "queued"
+                                    item?.status === "queued"
                                       ? "Cancel"
                                       : item.status
                                   }
                                   onClickFunc={handleCancelAppointment}
-                                  item={item[0]}
+                                  item={item}
                                   isClicked={setCancelItem}
                                   loading={loadingApt}
                                 />

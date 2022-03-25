@@ -18,6 +18,8 @@ import {
   UPDATE_AP_URL,
   SPARK_API_URL,
 } from "../../utils/url";
+import { getAuth, signOut } from "firebase/auth";
+
 import {
   child,
   equalTo,
@@ -41,24 +43,23 @@ const dbRef = ref(dbs); // Create Database reference
 export const SignupPatient = async (data) => {
   return new Promise(async (resolve, reject) => {
     // const hash = await bcrypt.hash(data.password,10);
-    const id = uuid();
+
     get(child(dbRef, "Patient/" + data.phoneNo)).then((snapShot) => {
       if (snapShot.exists()) {
         reject("User already exists");
       } else {
         set(child(dbRef, "Patient/" + data.phoneNo), {
-          id: id,
-          phoneno: data.phoneNo,
-          password: data.password,
+          id: data.uid,
+          accesstoken: data.accessToken,
+          phoneno: data.phoneNumber,
           createdAt: Date.now(),
           isregistered: false,
           isloggedin: false,
         }).then(() =>
           resolve({
-            id: id,
-            accessToken: null,
-            phoneno: data.phoneNo,
-            password: data.password,
+            id: data.uid,
+            accessToken: data.accessToken,
+            phoneno: data.phoneNumber,
             createdat: Date.now(),
             isregistered: false,
             isloggedin: false,
@@ -71,24 +72,22 @@ export const SignupPatient = async (data) => {
 
 export const SignupDoctor = async (data) => {
   return new Promise(async (resolve, reject) => {
-    const id = uuid();
     get(child(dbRef, "Doctor/" + data.phoneNo)).then((snapShot) => {
       if (snapShot.exists()) {
         reject("User already exists");
       } else {
         set(child(dbRef, "Doctor/" + data.phoneNo), {
-          id: id,
-          phoneno: data.phoneNo,
-          password: data.password,
+          id: data.uid,
+          accesstoken: data.accessToken,
+          phoneno: data.phoneNumber,
           createdAt: Date.now(),
           isregistered: false,
           isloggedin: false,
         }).then((res) =>
           resolve({
-            id: id,
-            accessToken: null,
-            phoneno: data.phoneNo,
-            password: data.password,
+            id: data.uid,
+            accessToken: data.accessToken,
+            phoneno: data.phoneNumber,
             createdat: Date.now(),
             isregistered: false,
             isloggedin: false,
@@ -101,21 +100,34 @@ export const SignupDoctor = async (data) => {
 
 export const loginPatient = async (data) => {
   return new Promise(async (resolve, reject) => {
-    get(child(dbRef, "Patient/" + data.phoneNo)).then((snapShot) => {
+    get(child(dbRef, "Patient/" + data.phoneNumber)).then((snapShot) => {
       if (!snapShot.exists()) {
-        reject("User doesn't exists,Please do signup");
+        set(child(dbRef, "Patient/" + data.phoneNumber), {
+          id: data.uid,
+          accesstoken: data.accessToken,
+          phoneno: data.phoneNumber,
+          createdAt: Date.now(),
+          isregistered: false,
+          isloggedin: true,
+        }).then(() =>
+          resolve({
+            id: data.uid,
+            accessToken: data.accessToken,
+            phoneno: data.phoneNumber,
+            createdat: Date.now(),
+            isregistered: false,
+            isloggedin: true,
+          })
+        );
       } else {
         const val = snapShot.val();
-        if (val.password == data.password) {
-          var updates = {};
-          updates["/Patient/" + data.phoneNo + "/isloggedin"] = true;
-          update(dbRef, updates).then(() => {
-            console.log("Updated");
-            resolve({ ...val, isloggedin: true });
-          });
-        } else {
-          reject("Incorrect credentials");
-        }
+
+        var updates = {};
+        updates["/Patient/" + data.phoneNo + "/isloggedin"] = true;
+        update(dbRef, updates).then(() => {
+          console.log("Updated");
+          resolve({ ...val, isloggedin: true });
+        });
       }
     });
   });
@@ -125,19 +137,32 @@ export const loginDoctor = async (data) => {
   return new Promise(async (resolve, reject) => {
     get(child(dbRef, "Doctor/" + data.phoneNo)).then((snapShot) => {
       if (!snapShot.exists()) {
-        reject("User doesn't exists,Please do signup");
+        set(child(dbRef, "Doctor/" + data.phoneNumber), {
+          id: data.uid,
+          accesstoken: data.accessToken,
+          phoneno: data.phoneNumber,
+          createdAt: Date.now(),
+          isregistered: false,
+          isloggedin: true,
+        }).then((res) =>
+          resolve({
+            id: data.uid,
+            accessToken: data.accessToken,
+            phoneno: data.phoneNumber,
+            createdat: Date.now(),
+            isregistered: false,
+            isloggedin: true,
+          })
+        );
       } else {
         const val = snapShot.val();
-        if (val.password == data.password) {
-          var updates = {};
-          updates["/Doctor/" + data.phoneNo + "/isloggedin"] = true;
-          update(dbRef, updates).then(() => {
-            console.log("Updated");
-            resolve({ ...val, isloggedin: true });
-          });
-        } else {
-          reject("Incorrect credentials");
-        }
+
+        var updates = {};
+        updates["/Doctor/" + data.phoneNo + "/isloggedin"] = true;
+        update(dbRef, updates).then(() => {
+          console.log("Updated");
+          resolve({ ...val, isloggedin: true });
+        });
       }
     });
   });
@@ -217,13 +242,14 @@ export const updateDoctor = async (data) => {
 };
 
 export const createDoctor = async (data) => {
+  console.log(data);
   const bodyObj = {
     id: data.id,
     name: data.name,
     phoneno: data.phoneNo,
     qualifications: data.qualifications,
     email: data.email,
-    dept: data.department,
+    department: data.department,
     hospital: data.hospitalName,
     age: data.age,
     specializations: data.specialisations,
@@ -252,23 +278,36 @@ export const createDoctor = async (data) => {
 
 export const logoutPatient = async (data) => {
   return new Promise(async (resolve, reject) => {
-    var updates = {};
-    updates["isloggedin"] = false;
-    update(child(dbRef, "Patient/" + data.phoneno + "/"), updates)
-      .then(() => {
-        resolve("Logged out successfully");
-      })
-      .catch((err) => reject(err.message));
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      var updates = {};
+      updates["isloggedin"] = false;
+      update(child(dbRef, "Patient/" + data.phoneno + "/"), updates)
+        .then(() => {
+          resolve("Logged out successfully");
+        })
+        .catch((err) => reject(err.message));
+    });
   });
 };
 
 export const logoutDoctor = async (data) => {
   return new Promise(async (resolve, reject) => {
-    var updates = {};
-    updates["isloggedin"] = false;
-    update(child(dbRef, "Doctor/" + data.phoneno + "/"), updates).then(()=>{
-      resolve("Logged out successfully");
-    }).catch(err=>reject(err.message));
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        var updates = {};
+        updates["isloggedin"] = false;
+        update(child(dbRef, "Doctor/" + data.phoneno + "/"), updates)
+          .then(() => {
+            resolve("Logged out successfully");
+          })
+          .catch((err) => reject(err.message));
+      })
+      .catch((error) => {
+        // An error happened.
+        reject(error.message);
+      });
   });
 };
 
@@ -352,10 +391,11 @@ export const createAppointment = async (data) => {
     get(
       query(
         child(dbRef, `Appointment/${data.apdate}/${data.dphoneno}`),
-        orderByKey(data.pphoneno)
+        orderByChild("pphoneno"),equalTo(data.pphoneno)
       )
     ).then((snapShot) => {
       if (snapShot.exists()) {
+        console.log(snapShot.val())
         reject(
           "You have already booked an appointment with this doctor on this date"
         );
@@ -434,7 +474,7 @@ export const createAppointment = async (data) => {
                   })
                   .catch((err) => reject(err.message));
               } else {
-                const v = snapS.val();
+                const v = Object.values(snapS.val())[0];
                 const ts = Date.now();
                 set(
                   child(
@@ -486,7 +526,7 @@ export const getAppointment = async (data) => {
   console.log("Get Appointment Called", data);
   return new Promise(async (resolve, reject) => {
     const dt = moment(new Date()).format("YYYY-MM-DD");
-    console.log(data)
+    console.log(data);
     if (data.forUser === "doctor") {
       if (!data.status) {
         get(child(dbRef, `Appointment/${dt}/${data.dphoneNo}`))
@@ -521,15 +561,19 @@ export const getAppointment = async (data) => {
             return;
           }
           var PatientArray = [];
-
+        
           Object.values(ss.val()).map((dno) => {
             const allPatient = Object.values(dno);
+            console.log(allPatient)
             allPatient.map((ppn) => {
               const patient = Object.values(ppn);
-
-              if (patient[0].pphoneno == data.pphoneNo) {
-                PatientArray.push(patient);
-              }
+              console.log(patient)
+              patient.map(pt=>{
+                if (pt.pphoneno == data.pphoneNo) {
+                  PatientArray.push(pt);
+                }
+              })
+              
             });
           });
 
@@ -543,14 +587,18 @@ export const getAppointment = async (data) => {
               const allPatient = Object.values(dno);
               allPatient.map((ppn) => {
                 const patient = Object.values(ppn);
-                if (
-                  patient[0].status == "queued" &&
-                  patient[0].pphoneno == data.pphoneNo
-                ) {
-                  PatientArray.push(patient[0]);
-                }
+                patient.map((pt)=>{
+                  if (
+                    pt.status == data.status &&
+                    pt.pphoneno == data.pphoneNo
+                  ) {
+                    PatientArray.push(pt);
+                  }
+                })
+                
               });
             });
+            console.log("PatientArray", PatientArray);
             resolve({ status: 200, response: PatientArray });
           })
           .catch((err) => reject(err.message));

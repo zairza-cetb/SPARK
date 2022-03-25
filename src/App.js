@@ -34,7 +34,8 @@ function App() {
           <Route
             exact
             path="/signin"
-          ><SignUp/></Route>
+            render={(props) => <SignUp {...props} />}
+          ></Route>
         </Switch>
       </BrowserRouter>
     </div>

@@ -46,6 +46,7 @@ const profileReducer = (state = initialState, action) => {
     case ActionTypes.CREATE_USER_SUCCESS: {
       return {
         ...state,
+        access:action.payload.accesstoken,
         id: action.payload.id,
         phoneno: action.payload.phoneno,
         address: action.payload.address,
@@ -59,10 +60,10 @@ const profileReducer = (state = initialState, action) => {
         pincode: action.payload.pincode || null,
         state: action.payload.state || null,
         qualifications: action.payload.qualifications || null,
-        specializations: action.payload.specialisations || null,
-        hospitalName: action.payload.hospitalname || null,
-        workingHrs: action.payload.workinghrs || null,
-        workingDays: action.payload.workingdays || null,
+        specializations: action.payload.specializations || null,
+        hospitalName: action.payload.hospital || null,
+        workingHrs: action.payload.workingHours || null,
+        workingDays: action.payload.workingDays || null,
         department: action.payload.department || null,
         isLoading: false,
         type: action.payload.type,
