@@ -140,7 +140,7 @@ export default function SignUpPage(props) {
       {!toggleOTPCard ? (
         <div className="h-full bg-tertiary">
           <div className="flex overflow-hidden">
-            <div className="lg:max-w-3xl md:max-w-xl lg:w-full w-1/4 mt-0 hidden lg:block flex flex-col justify-center items-center">
+            <div className="lg:w-full w-1/4 mt-0 hidden lg:block flex flex-col justify-center items-center">
               <div className="flex justify-start ml-10 mt-5 text-xl text-primary font-semibold tracking-widest">
                 VirQue
               </div>
@@ -183,9 +183,9 @@ export default function SignUpPage(props) {
                 </div>
               </div>
             </div>
-            <div className="bg-primary max-w-5xl lg:max-w-3xl w-full h-full overflow-hidden h-screen">
+            <div className="bg-primary w-full h-full overflow-hidden h-screen">
               <div className="mx-auto max-w-lg p-8 md:p-12 rounded-xl">
-                <section className="header mt-60">
+                <section className="header mt-40 lg:mt-60">
                   <div className="flex justify-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -200,9 +200,6 @@ export default function SignUpPage(props) {
                       />
                     </svg>
                   </div>
-                  <div className="absolute w-10 h-10 rounded-xl bg-light top-10 right-16 z-0 transform rotate-45 hidden md:block"></div>
-                  <div className="absolute w-8 h-8 rounded-xl bg-light bottom-5 right-20 transform rotate-12 hidden md:block"></div>
-
                   <div className="number mb-6 pt-3 rounded-xl bg-light">
                     <input
                       placeholder="Enter your number"
@@ -227,6 +224,7 @@ export default function SignUpPage(props) {
             </div>
           </div>
           <div id="recaptcha-container" />
+
         </div>
       ) : (
         <div className="h-full bg-tertiary">
@@ -290,9 +288,7 @@ export default function SignUpPage(props) {
                       />
                     </svg>
                   </div>
-                  <div className="absolute w-10 h-10 rounded-xl bg-light top-10 right-16 z-0 transform rotate-45 hidden md:block"></div>
-                  <div className="absolute w-8 h-8 rounded-xl bg-light bottom-5 right-20 transform rotate-12 hidden md:block"></div>
-                  <div className="absolute w-15 h-15 rounded-xl bg-light top-10 right-20 transform rotate-12 hidden md:block"></div>
+  
                   <div className="otp mb-6 pt-3 rounded-xl bg-light">
                     <input
                       placeholder="Enter the OTP"
@@ -331,4 +327,5 @@ export default function SignUpPage(props) {
       )}
     </div>
   );
+
 }
