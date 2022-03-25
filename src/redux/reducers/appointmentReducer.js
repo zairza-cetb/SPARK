@@ -60,7 +60,10 @@ const appointmentReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         appointments: state.appointments.filter(
-          (ap) => ap.createdat !== payload + "Z"
+          (ap) =>{
+            //console.log((!(ap[0].pphoneno==payload.pphoneno && ap[0].dphoneno==payload.dphoneno))) 
+            return (!(ap[0].apdate==payload.aptdate))
+          }
         ),
         isLoading:false
       };

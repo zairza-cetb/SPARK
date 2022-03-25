@@ -56,6 +56,8 @@ function DoctorProfile() {
   const history = useHistory();
   const currentUser = useSelector((state) => state.authReducer);
 
+
+  console.log("Registered User",registeredUser)
   useEffect(() => {
     if (!authUser.isSignedUp) history.push("/");
     if (authUser.type === "patient") history.goBack();
@@ -118,7 +120,7 @@ function DoctorProfile() {
     if (!isAlreadyRegistered)
       dispatch(
         createDoctorProfile(
-          JSON.stringify({
+          {
             id: authUser.id,
             name: name,
             age: age,
@@ -135,14 +137,14 @@ function DoctorProfile() {
             department: department,
             email: email,
             type: "doctor",
-          })
+          }
         )
       );
     else {
       setIsUpdated(true);
       dispatch(
         updateDoctorAsync(
-          JSON.stringify({
+          {
             name: name,
             age: age,
             workingDays: workingDays,
@@ -157,7 +159,7 @@ function DoctorProfile() {
             specialisations: specialization,
             department: department,
             email: email,
-          })
+          }
         )
       );
     }

@@ -82,8 +82,8 @@ function PatientDashboard() {
   const doctorsDropdownList = [];
   for (var d in doctorsList) {
     doctorsDropdownList.push(
-      <option value={d} className={doctorsList[d].name}>
-        {doctorsList[d].name}
+      <option value={d} className={doctorsList[d].Profile?.name}>
+        {doctorsList[d].Profile?.name}
       </option>
     );
   }
@@ -125,10 +125,12 @@ function PatientDashboard() {
     setLoading(false);
   }, []);
 
+  console.log("Doctors List",doctorsList);
+
   useEffect(() => {
     if (todayAppointmentList.length > 0 && doctorsList.length > 0 && doctorNo) {
       setLoading(true);
-
+      console.log("TODAY",todayAppointmentList)
       setDoctorDetails(getDoctorDetails(doctorNo)); //----------DOCTOR DETAILS FOR PROFILE CARD ADDED TO STATE----------------------//
 
       const newArray = todayAppointmentList.filter(
@@ -153,7 +155,6 @@ function PatientDashboard() {
     setLoading(false);
     const todayDate = new Date().toJSON().slice(0, 10);
     const AllAppointment = appointmentDetails(todayDate);
-
     if (AllAppointment.length > 0) {
       const doctorPhoneno = AllAppointment[0].dphoneno;
 
@@ -185,12 +186,16 @@ function PatientDashboard() {
 
   const getDoctorDetails = (phone) => {
     //----------------FILTERS THE CURRENT DOCTOR ACCORDING TO TODAY'S APPOINTMENT ------------------------//
+    console.log("GET DOC",phone)
     const selectedDoctor = doctorsList?.filter(
       (doctor) => doctor.phoneno === phone
     );
+
+    console.log("Selected Doctor",selectedDoctor)
     if (selectedDoctor?.length > 0) return selectedDoctor[0];
     else return null;
   };
+  console.log(doctorDetails)
 
   const appointmentDetails = (date) => {
     //-------------------FETCHES TODAY'S APPOINTMENT ,IF THERE, FROM LIST OF APPOINTMENT FOR PATIENT-------------------//
@@ -211,9 +216,7 @@ function PatientDashboard() {
         symptoms: symptoms,
         type: type,
       };
-
       dispatch(createAppointmentAction(appointmentData));
-
       setAppointmentDate("");
       setDoctor(0);
       setSymptoms("");
@@ -490,17 +493,18 @@ function PatientDashboard() {
                       <h3 className="grid md:flex text-2xl text-md font-bold text-dark mb-10 pl-4">
                         Doctor's details
                       </h3>
+                      {console.log("DOCTOR DETAILA",doctorDetails)}
                       <DoctorProfileCard
-                        name={doctorDetails.name}
-                        about={`${doctorDetails.specialisations.join(
+                        name={doctorDetails.Profile.name}
+                        about={`${doctorDetails.Profile.specializations.join(
                           ","
                         )} Specialist`}
-                        hospital={doctorDetails.hospitalname}
-                        address={doctorDetails.address}
-                        working_hrs={`${doctorDetails.workinghrs.start.substr(
+                        hospital={doctorDetails.Profile.hospital}
+                        address={doctorDetails.Profile.address}
+                        working_hrs={`${doctorDetails.Profile.workingHours.start.substr(
                           0,
                           5
-                        )} - ${doctorDetails.workinghrs.end.substr(0, 5)}`}
+                        )} - ${doctorDetails.Profile.workingHours.end.substr(0, 5)}`}
                       />
                     </div>
                   </div>

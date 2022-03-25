@@ -68,8 +68,8 @@ export default function SignIn(props) {
       password: password,
     };
     setLoading(true);
-    if (type === "patient") dispatch(patientLogin(JSON.stringify(data)));
-    else dispatch(doctorLogin(JSON.stringify(data)));
+    if (type === "patient") dispatch(patientLogin(data));
+    else dispatch(doctorLogin(data));
   };
 
   if (isSignUpClicked) {

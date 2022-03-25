@@ -5,8 +5,7 @@ import Dashboard from "./pages/patientDashboard/patientDashboard";
 import PatientProfile from "./pages/patientDashboard/patientProfile";
 import DoctorProfile from "./pages/doctorDashboard/DoctorProfile";
 import DoctorDashboard from "./pages/doctorDashboard/DoctorDashboard";
-import SignIn from "./pages/auth/SignIn";
-import SignUp from "./pages/auth/Signup";
+import SignUp from "./pages/auth/SignUpPage";
 import Inventory from "./pages/inventory";
 
 function App() {
@@ -35,11 +34,6 @@ function App() {
           <Route
             exact
             path="/signin"
-            render={(props) => <SignIn {...props} />}
-          ></Route>
-          <Route
-            exact
-            path="/signup"
             render={(props) => <SignUp {...props} />}
           ></Route>
         </Switch>

@@ -98,7 +98,6 @@ function DoctorDashboard() {
     // to remove the "Z" at the end of createdat
 
     var formatted = appointmentList[0].createdat;
-    formatted = formatted.slice(0, -1);
 
     if (!latestPatient) console.log("NO LATEST PATIENT");
     else {
