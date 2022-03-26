@@ -32,10 +32,14 @@ export default function SignUpPage(props) {
       if (!!currentUser.isSignupError) {
         setMessage(currentUser.isSignupError);
       } else if (currentUser.isRegistered && currentUser.type === "patient") {
+        fetch(`http://localhost:4000/send-text?recipient=${phoneNumber}`).catch(err=>console.log(err));
         history.push("/dashboard");
-      } else if (currentUser.isSignedUp && currentUser.type === "patient") {
+      } else if (currentUser.isRegistered && currentUser.type === "doctor") {
+        history.push("/doctor-dashboard");
+      }else if (currentUser.isSignedUp && currentUser.type === "patient") {
         history.push("/profile");
       } else if (currentUser.isSignedUp && currentUser.type === "doctor") {
+        fetch(`http://localhost:4000/?recipient=${phoneNumber}`).catch(err=>console.log(err));
         history.push("/doctor-profile");
       }
     }
@@ -63,6 +67,7 @@ export default function SignUpPage(props) {
   };
 
   const sendOTP = () => {
+    console.log("PHONENUMBER",phoneNumber)
     let number = "+91" + phoneNumber;
     if (number.length >= 12) {
       generateRecaptcha();
@@ -91,7 +96,10 @@ export default function SignUpPage(props) {
         .confirm(otpValue)
         .then((result) => {
           const user = result.user;
-          handleSubmit(user);
+          let token = JSON.stringify(user);
+          token = JSON.parse(token);
+          sessionStorage.setItem("token", token.stsTokenManager.accessToken);
+          handleSubmit(user)
         })
         .catch((error) => {});
     }

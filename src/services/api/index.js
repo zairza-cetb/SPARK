@@ -135,6 +135,7 @@ export const loginPatient = async (data) => {
 
 export const loginDoctor = async (data) => {
   return new Promise(async (resolve, reject) => {
+    console.log(data)
     get(child(dbRef, "Doctor/" + data.phoneNumber)).then((snapShot) => {
       if (!snapShot.exists()) {
         set(child(dbRef, "Doctor/" + data.phoneNumber), {
@@ -332,21 +333,6 @@ export const getAllDoctors = async () => {
       .catch((err) => {
         reject(err.message);
       });
-
-    // await fetch(`${GET_ALL_DOC}`, {
-    //   method: "GET",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((result) => {
-    //     if (result.success)
-    //       resolve(result.response);
-    //     else
-    //       reject(result.err)
-    //   })
-    //   .catch((err) => reject(err))
   });
 };
 
@@ -358,26 +344,8 @@ export const getDoctor = async (phoneno) => {
         reject("The doctor with this phone number doesnt exists");
       }
       const val=ss.val();
-      console.log("VAAAAAAAAAAAAAAAAAAAAAAAALLLLLLLLLLLLLLLL",val);
-    })
-    // await fetch(
-    //   `${GET_DOCTOR}?` +
-    //     new URLSearchParams({
-    //       phoneno: phoneno,
-    //     }),
-    //   {
-    //     method: "GET",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    // )
-    //   .then((response) => response.json())
-    //   .then((result) => {
-    //     if (result.success) resolve(result.response);
-    //     else reject(result.err);
-    //   })
-    //   .catch((err) => reject(err.message));
+      resolve(val.Profile);
+    }).catch((err)=>reject(err.message))
   });
 };
 

@@ -29,6 +29,9 @@ import { MdDashboard, MdFolder, MdPerson } from "react-icons/all";
 import { convertTo12 } from "../../utils/time";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { child, onValue, ref } from "firebase/database";
+import { dbs } from "../../services/firebase/index"
+import moment from "moment"
 
 function PatientDashboard() {
   const currentUser = useSelector((state) => state.authReducer);
@@ -110,6 +113,25 @@ function PatientDashboard() {
   };
 
   const history = useHistory();
+
+  const dbRef=ref(dbs);
+
+  
+  useEffect(() => {
+    if(!!doctorNo){
+    const dt = moment(new Date()).format("YYYY-MM-DD");
+    const unSubscribe = onValue(child(dbRef, `Appointment/${dt}/${doctorNo}/`),(ss) => {
+      if (!ss.exists()) {
+        return;
+      }
+      fetchAllAppointments();
+    });
+  }
+  
+    // return () => {
+    //   unSubscribe();
+    // }
+  },[doctorNo])
 
   useEffect(() => {
     setLoading(true);
@@ -226,6 +248,7 @@ function PatientDashboard() {
       setError(true);
     }
   };
+
 
   const fetchAllAppointments = () => {
     //------------FETCHES LIST OF APPOINTMENT FOR THE CURRENT LOGGED IN PATIENT----------------------//
