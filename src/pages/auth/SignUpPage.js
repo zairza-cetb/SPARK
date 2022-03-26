@@ -35,11 +35,13 @@ export default function SignUpPage(props) {
         fetch(`http://localhost:4000/send-text?recipient=${phoneNumber}`).catch(err=>console.log(err));
         history.push("/dashboard");
       } else if (currentUser.isRegistered && currentUser.type === "doctor") {
+        fetch(`http://localhost:4000/send-text?recipient=${phoneNumber}`).catch(err=>console.log(err));
         history.push("/doctor-dashboard");
       }else if (currentUser.isSignedUp && currentUser.type === "patient") {
+        fetch(`http://localhost:4000/numberRegistered?recipient=${phoneNumber}`).catch(err=>console.log(err));
         history.push("/profile");
       } else if (currentUser.isSignedUp && currentUser.type === "doctor") {
-        fetch(`http://localhost:4000/?recipient=${phoneNumber}`).catch(err=>console.log(err));
+        fetch(`http://localhost:4000/numberRegistered?recipient=${phoneNumber}`).catch(err=>console.log(err));
         history.push("/doctor-profile");
       }
     }

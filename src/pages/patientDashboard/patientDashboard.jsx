@@ -239,6 +239,7 @@ function PatientDashboard() {
         type: type,
       };
       dispatch(createAppointmentAction(appointmentData));
+      fetch(`http://localhost:4000/appointment?recipient=${currentUser.phoneno}`).catch(err=>console.log(err));
       setAppointmentDate("");
       setDoctor(0);
       setSymptoms("");
