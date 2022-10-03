@@ -46,7 +46,7 @@ yarn
 
 
 
-4. Run locally:
+5. Run locally:
 ```bash
 npm start
 yarn start
