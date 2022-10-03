@@ -183,10 +183,10 @@ export default function SignUpPage(props) {
               VirQue
             </a>
             <div className="h-full flex flex-col justify-center items-center">
-              <div className="w-5/6 md:w-3/6">
+              <div className="w-5/6 md:w-3/6 p-7 lg:p-0">
                 <Lottie animationData={SignupAnimation} />
               </div>
-              <div className="text-xl text-primary font-semibold text-center px-2">
+              <div className="text-xl text-primary font-semibold text-center px-4">
                 <p>Let's get you setup!</p>
                 <p>
                   Enter the 10 digit phone number you want to link with your
