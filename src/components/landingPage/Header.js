@@ -36,8 +36,8 @@ function Header() {
             href="/"
           >
             <svg
-              width="140"
-              height="70"
+              width="160"
+              height="80"
               viewBox="0 0 218 76"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -63,13 +63,13 @@ function Header() {
           </a>
           <nav className="ml-auto mr-auto flex flex-wrap items-center text-base justify-center"></nav>
           <button
-            className="text-white font-normal inline-flex items-center mr-4 md:mr-5 text-sm cursor-pointer"
+            className="text-white font-normal inline-flex items-center mr-4 md:mr-5 text-xl cursor-pointer hover:text-black"
             onClick={(e) => setDoctor(true)}
           >
             Apply as Doctor
           </button>
           <a
-            className="inline-flex items-center text-primary bg-white border-0 py-2 px-4 focus:outline-none hover:opacity-80 rounded-md font-semibold"
+            className="inline-flex items-center text-primary bg-white border-0 py-2 px-4 focus:outline-none hover:opacity-80 rounded-md font-semibold hover:bg-black hover:text-white"
             href="/signin"
             onClick={(e) => setPatient(true)}
           >
