@@ -29,6 +29,7 @@ function WaitingListItemButton({
     if (clicked) {
       if (item) isClicked(item);
       else onClickFunc();
+      setClicked(false);
     }
   }, [clicked]);
   if (appointmentStatus === "Next" || appointmentStatus === "Upcoming" || appointmentStatus === "Cancel") {
