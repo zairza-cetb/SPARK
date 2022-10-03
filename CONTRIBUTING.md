@@ -28,6 +28,24 @@ npm install
 yarn
 ```
 
+4. Set up  your firebase project credentials
+* In the firebase console,click **Add Project**
+  * To create a new project, enter the desired project name.
+* Click Create Project
+* After you have a Firebase project, you can register your app
+   * In the center of the Firebase console's project overview page, click the Web icon to launch the setup workflow.
+   * Enter your app's nickname.
+   * Click Register app.
+   * Follow the on-screen instructions to add and initialize the Firebase SDK in your app.
+   * Go to console and then project settings
+   * Then in **General** tab , you will find the *Your apps* section, select your web app name
+   * You will find your firebase configurations there
+   * Replace the **firebaseConfig** object with the object in **src\services\firebase\index.js** file in your folder.
+   * Make sure to replace all your firebase credentials with environment variables for security reasons.
+   * Make sure not to make those environment variables public by putting the **.env** file in **.gitignore** file.
+
+
+
 4. Run locally:
 ```bash
 npm start
