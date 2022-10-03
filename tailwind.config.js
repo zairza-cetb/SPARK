@@ -16,6 +16,9 @@ module.exports = {
       boxShadow: {
         secondary: "4px 4px 20px rgba(0, 0, 0, 0.25)",
       },
+      screens: {
+        'landscape': {'raw': '(orientation: landscape) and (max-width: 1024px)'},
+      }
     },
     letterSpacing: {
       widest2: "1.2rem",
