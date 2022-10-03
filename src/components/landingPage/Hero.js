@@ -10,7 +10,7 @@ function Hero() {
     return (
       <Redirect
         to={{
-          pathname: "/signup",
+          pathname: "/signin",
           state: {
             type: "patient",
           },

@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
-import { getAuth} from "firebase/auth"; 
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: `${process.env.REACT_APP_API_KEY}`,
@@ -10,11 +10,11 @@ const firebaseConfig = {
   storageBucket: "virque-6d662.appspot.com",
   messagingSenderId: "428804896137",
   appId: `${process.env.REACT_APP_ID}`,
-  measurementId: "G-J5PJSYEH3J"
+  measurementId: "G-J5PJSYEH3J",
 };
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const dbs = getDatabase(app);
-const authentication=getAuth(app);
+const authentication = getAuth(app);
 export default authentication;
