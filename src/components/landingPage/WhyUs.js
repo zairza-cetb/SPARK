@@ -6,7 +6,7 @@ function Services() {
           Why <span className="text-primary">Us?</span>
         </h1>
         <div className="grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          <div className="p-8 w-10/12 flex bg-secondary rounded-md">
+          <div className="p-8 w-full flex bg-secondary rounded-md transform transition-all duration-500 ease-in-out hover:scale-105">
             <div className="w-12 h-12 inline-flex items-center justify-center rounded-full bg-primary text-white mb-4 flex-shrink-0">
               <svg
                 viewBox="0 0 24 24"
@@ -31,7 +31,7 @@ function Services() {
               </p>
             </div>
           </div>
-          <div className="p-8 w-10/12 flex bg-secondary rounded-md">
+          <div className="p-8 w-full flex bg-secondary rounded-md transform transition-all duration-500 ease-in-out hover:scale-105">
             <div className="w-12 h-12 inline-flex items-center justify-center rounded-full bg-primary text-white mb-4 flex-shrink-0">
               <svg
                 width="24"
@@ -58,7 +58,7 @@ function Services() {
               </p>
             </div>
           </div>
-          <div className="p-8 w-10/12 flex bg-secondary rounded-md">
+          <div className="p-8 w-full flex bg-secondary rounded-md transform transition-all duration-500 ease-in-out hover:scale-105">
             <div className="w-12 h-12 inline-flex items-center justify-center rounded-full bg-primary text-white mb-4 flex-shrink-0">
               <svg
                 fill="none"
@@ -83,7 +83,7 @@ function Services() {
               </p>
             </div>
           </div>
-          <div className="p-8 w-10/12 flex bg-secondary rounded-md">
+          <div className="p-8 w-full flex bg-secondary rounded-md transform transition-all duration-500 ease-in-out hover:scale-105">
             <div className="w-12 h-12 inline-flex items-center justify-center rounded-full bg-primary text-white mb-4 flex-shrink-0">
               <svg
                 fill="none"
@@ -110,7 +110,7 @@ function Services() {
               </p>
             </div>
           </div>
-          <div className="p-8 w-10/12 flex bg-secondary rounded-md">
+          <div className="p-8 w-full flex bg-secondary rounded-md transform transition-all duration-500 ease-in-out hover:scale-105">
             <div className="w-12 h-12 inline-flex items-center justify-center rounded-full bg-primary text-white mb-4 flex-shrink-0">
               <svg
                 fill="none"
@@ -133,7 +133,7 @@ function Services() {
               </p>
             </div>
           </div>
-          <div className="p-8 w-10/12 flex bg-secondary rounded-md">
+          <div className="p-8 w-full flex bg-secondary rounded-md transform transition-all duration-500 ease-in-out hover:scale-105">
             <div className="w-12 h-12 inline-flex items-center justify-center rounded-full bg-primary text-white mb-4 flex-shrink-0">
               <svg
                 width="24"
